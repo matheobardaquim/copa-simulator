@@ -5,10 +5,17 @@ from logger_sorteio import SorteioLogger
 
 class SorteioManager:
     def __init__(self, potes_customizados=None):
-        # Carregar times do JSON
-        data_path = Path(__file__).parent.parent / "data" / "teams.json"
-        with open(data_path, "r", encoding="utf-8") as f:
-            self.todos_times = json.load(f)
+        # ANTES: Path(__file__).parent.parent (ia para a raiz)
+        # AGORA: Path(__file__).parent (fica em backend/)
+        data_path = Path(__file__).parent / "data" / "teams.json"
+        
+        try:
+            with open(data_path, "r", encoding="utf-8") as f:
+                self.todos_times = json.load(f)
+        except FileNotFoundError:
+            # Dica de Tech Lead: Logue o erro para não ficar no escuro
+            print(f"❌ SorteioManager não achou o JSON em: {data_path}")
+            raise
         
         # Usar potes customizados ou padrão
         if potes_customizados:

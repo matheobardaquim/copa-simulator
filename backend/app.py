@@ -1,15 +1,34 @@
+import sys
+import os
 import json
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, Dict, List, Any
+
+# 1. LOCALIZAÇÃO ABSOLUTA
+# Resolve o caminho do diretório onde o app.py está (pasta backend)
+BASE_DIR = Path(__file__).resolve().parent
+
+# 2. CONFIGURAÇÃO DE IMPORTS
+if str(BASE_DIR) not in sys.path:
+    sys.path.append(str(BASE_DIR))
+
+# Agora os imports funcionam com segurança
 from sorteio import fazer_sorteio
-import os
+from logger_sorteio import SorteioLogger
 
 app = FastAPI()
 
-# REMOVIDO: os.makedirs("logs") - Não é permitido no ambiente read-only da Vercel
+# 3. CAMINHO DA DATABASE
+# Forçamos o caminho para dentro da pasta 'backend/data/'
+DATA_PATH = BASE_DIR / "data" / "teams.json"
+
+# Print de debug - Isso vai aparecer no seu terminal e nos logs da Vercel
+print(f"--- 💡 SISTEMA INICIALIZADO ---")
+print(f"Procurando database em: {DATA_PATH}")
+print(f"Arquivo existe? {'✅' if DATA_PATH.exists() else '❌'}")
 
 # Permitir requisições do frontend
 app.add_middleware(
@@ -30,16 +49,18 @@ class SorteioRequest(BaseModel):
     potes_customizados: Optional[Dict[str, Any]] = None
 
 def carregar_times():
-    """Carrega os times do JSON com caminho absoluto"""
-    base_dir = Path(__file__).parent
-    # Ajuste para garantir que encontre a pasta 'data' no repositório
-    data_path = base_dir.parent / "data" / "teams.json"
-    
-    if not data_path.exists():
-        data_path = base_dir / "data" / "teams.json"
+    """Carrega os times do JSON com tratamento de erro profissional"""
+    if not DATA_PATH.exists():
+        msg = f"Database não encontrada no caminho: {DATA_PATH}"
+        print(f"❌ {msg}")
+        raise HTTPException(status_code=500, detail=msg)
 
-    with open(data_path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(DATA_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"❌ Erro ao ler JSON: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/")
 def read_root():
@@ -81,6 +102,24 @@ def get_logs():
         "logs": "Ambiente Serverless: Logs persistentes em arquivo desativados. Verifique os logs em tempo real no console da Vercel."
     }
 
+@app.get("/api/times/potes")
+def get_times_por_pote():
+    """Retorna os times agrupados para a tela de Personalizar Potes"""
+    try:
+        times = carregar_times()
+        potes = {}
+        # Organiza os times em dicionários de 1 a 4
+        for i in range(1, 5):
+            potes[i] = [t for t in times if t.get("pote") == i]
+        
+        return {
+            "success": True,
+            "potes": potes
+        }
+    except Exception as e:
+        print(f"❌ Erro ao agrupar potes: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+        
 if __name__ == "__main__":
     import uvicorn
     # O uvicorn só vai rodar se você executar 'python app.py'
