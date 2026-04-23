@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+.venv/
+*.py[cod]
+*$py.class
+backend/logs/
+*.log
+
+# React / Node
+node_modules/
+dist/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDEs
+.vscode/
+.idea/
