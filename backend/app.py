@@ -1,3 +1,14 @@
+import os
+import sys
+from pathlib import Path
+
+# 1. PEGA O CAMINHO ABSOLUTO DA PASTA BACKEND
+current_dir = Path(__file__).parent.resolve()
+
+# 2. INJETA O CAMINHO NO TOPO DA BUSCA DO PYTHON
+if str(current_dir) not in sys.path:
+    sys.path.insert(0, str(current_dir))
+
 import sys
 import os
 import json
@@ -119,7 +130,7 @@ def get_times_por_pote():
     except Exception as e:
         print(f"❌ Erro ao agrupar potes: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-        
+
 if __name__ == "__main__":
     import uvicorn
     # O uvicorn só vai rodar se você executar 'python app.py'
