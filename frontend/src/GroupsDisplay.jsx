@@ -4,6 +4,25 @@ import './GroupsDisplay.css'
 function GroupsDisplay({ grupos, paisSede }) {
   if (!grupos) return null
 
+  const getPlayoffLabel = (potNumber, index) => {
+    const potNum = parseInt(potNumber);
+    
+    if (potNum !== 4 || index < 6 || index > 11) {
+      return null;
+    }
+    
+    const labels = {
+      6: 'PO World 1',
+      7: 'PO World 2',
+      8: 'PO UEFA 1',
+      9: 'PO UEFA 2',
+      10: 'PO UEFA 3',
+      11: 'PO UEFA 4'
+    };
+    
+    return labels[index] || null;
+  }
+
   const getConfederacaoBgColor = (confederacao) => {
     const cores = {
       'UEFA': '#3b5bdb',
@@ -36,7 +55,14 @@ function GroupsDisplay({ grupos, paisSede }) {
                     nome={time.nome}
                     tamanho="pequeno"
                   />
-                  <span className="team-name">{time.nome}</span>
+                  <span className="team-name">
+                    {time.nome}
+                    {/* --- TAG DE PLAY-OFF (PO) --- */}
+                    {/* Mostra label específico dos 6 últimos times do Pote 4 */}
+                    {time.pote === 4 && index >= 6 && (
+                      <span className="playoff-tag-groups">{getPlayoffLabel(time.pote, index)}</span>
+                    )}
+                  </span>
                   <span
                     className="confederacao-badge"
                     style={{ backgroundColor: getConfederacaoBgColor(time.confederacao) }}

@@ -169,12 +169,13 @@
 
 /* --- TAG MINIMALISTA DE PLAY-OFF --- */
 .playoff-tag-minimal {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 700;
   color: #94a3b8;
-  margin-left: 4px;
+  margin-left: 6px;
   letter-spacing: 0.3px;
   opacity: 0.8;
+  display: inline-block;
 }
 
 .team-info-section {

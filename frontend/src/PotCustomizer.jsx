@@ -14,7 +14,7 @@ function PotCustomizer({ onSorteio, paisSede }) {
   const API_BASE = import.meta.env.VITE_API_URL || '';
 
   // --- IDS DOS TIMES ANFITRIÕES (NÃO PODEM SER MOVIDOS DO POTE 1) ---
-  const HOST_IDS = [1, 5, 13]; // México, Canadá, EUA
+  const HOST_IDS = [1, 2, 3]; // México, Canadá, EUA
 
   useEffect(() => {
     carregarPotesDefault()
@@ -32,23 +32,27 @@ function PotCustomizer({ onSorteio, paisSede }) {
     return false;
   }
 
-  // --- FUNÇÃO AUXILIAR: IDENTIFICA SE É VAGA VIA PLAY-OFF ---
-  // Play-off são os 6 últimos times do Pote 4 (índices 6-11)
-  const isPlayoffSlot = (potNumber, teamIndex) => {
+  // --- FUNÇÃO HELPER GLOBAL: RETORNA LABEL DE PLAY-OFF ---
+  const getPlayoffLabel = (potNumber, index) => {
     const potNum = parseInt(potNumber);
-    return potNum === 4 && teamIndex >= 6;
+    
+    if (potNum !== 4 || index < 6 || index > 11) {
+      return null;
+    }
+    
+    const labels = {
+      6: 'PO World 1',
+      7: 'PO World 2',
+      8: 'PO UEFA 1',
+      9: 'PO UEFA 2',
+      10: 'PO UEFA 3',
+      11: 'PO UEFA 4'
+    };
+    
+    return labels[index] || null;
   }
 
-  // --- RETORNA O BADGE TEXT OU NULL ---
-  // A tag (PO) aparece SEMPRE se for slot de play-off, independente se foi trocado
-  const getPlayoffBadgeText = (team, potNumber, teamIndex) => {
-    const isPlayoff = isPlayoffSlot(potNumber, teamIndex);
-    
-    // Se é slot de play-off (índices 8-11 do Pote 4), retorna true
-    if (isPlayoff) return true;
-    
-    return null;
-  }
+
 
   const carregarPotesDefault = async () => {
     try {
@@ -182,7 +186,6 @@ function PotCustomizer({ onSorteio, paisSede }) {
               <div className="teams-list">
                 {times.map((time, index) => {
                   const isLocked = isTeamLocked(time, numPote);
-                  const isPlayoffBadge = getPlayoffBadgeText(time, numPote, index);
                   
                   return (
                     <div
@@ -192,15 +195,17 @@ function PotCustomizer({ onSorteio, paisSede }) {
                       onDragStart={(e) => !isLocked && handleDragStart(e, time, parseInt(numPote))}
                     >
                       <div className="team-info-section">
-                        <CountryFlag
-                          sigla={time.sigla}
-                          nome={time.nome}
-                          tamanho="pequeno"
-                        />
-                        <span className="team-name">
-                          {time.nome}
-                          {isPlayoffBadge && <span className="playoff-tag-minimal">(PO)</span>}
-                        </span>
+                        <CountryFlag sigla={time.sigla} nome={time.nome} tamanho="pequeno" />
+                        <div className="flex flex-col"> {/* Container para empilhar se necessário */}
+                          <span className="team-name">
+                            {time.nome}
+                            {getPlayoffLabel(numPote, index) && (
+                              <span className="playoff-tag-minimal">
+                                {getPlayoffLabel(numPote, index)}
+                              </span>
+                            )}
+                          </span>
+                        </div>
                       </div>
                       <span className="confederacao-tag">{time.confederacao}</span>
                       <div className="team-actions">

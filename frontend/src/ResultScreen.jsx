@@ -11,6 +11,26 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
   const [passoAtual, setPassoAtual] = useState(0)
   const [historicoPassos, setHistoricoPassos] = useState([])
 
+  // --- FUNÇÃO HELPER GLOBAL: RETORNA LABEL DE PLAY-OFF ---
+  const getPlayoffLabel = (potNumber, index) => {
+    const potNum = parseInt(potNumber);
+    
+    if (potNum !== 4 || index < 6 || index > 11) {
+      return null;
+    }
+    
+    const labels = {
+      6: 'PO World 1',
+      7: 'PO World 2',
+      8: 'PO UEFA 1',
+      9: 'PO UEFA 2',
+      10: 'PO UEFA 3',
+      11: 'PO UEFA 4'
+    };
+    
+    return labels[index] || null;
+  }
+
   // --- CONSTRUIR FILA PLANA DE 48 PASSOS (CORREÇÃO: usar índices diretos) ---
   const filaCompleta = useMemo(() => {
     const fila = []
@@ -333,10 +353,10 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
                           />
                           <span className="preview-team-name">
                             {time.nome}
-                            {/* --- TAG MINIMALISTA DE PLAY-OFF (PO) --- */}
-                            {/* Mostra (PO) apenas nos 6 últimos times do Pote 4 (índices 6-11) */}
+                            {/* --- TAG DE PLAY-OFF (PO) --- */}
+                            {/* Mostra label específico dos 6 últimos times do Pote 4 */}
                             {time.pote === 4 && index >= 6 && (
-                              <span className="playoff-tag-rs">(PO)</span>
+                              <span className="playoff-tag-rs">{getPlayoffLabel(time.pote, index)}</span>
                             )}
                           </span>
                         </>
