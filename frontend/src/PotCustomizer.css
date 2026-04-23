@@ -129,6 +129,54 @@
 
 .team-draggable:active { cursor: grabbing; }
 
+/* --- ESTILOS PARA TIMES BLOQUEADOS (ANFITRIÕES E PLAY-OFFS) --- */
+.team-draggable.team-locked {
+  opacity: 0.7;
+  cursor: not-allowed !important;
+  background: #f8f8f8;
+  border-color: #ddd;
+  pointer-events: auto;
+}
+
+.team-draggable.team-locked:hover {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  border-color: #ddd;
+}
+
+.lock-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: #c53030;
+  background: #fff5f5;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.playoff-tag {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 8px;
+  background: linear-gradient(135deg, #fbb535 0%, #f59e0b 100%);
+  color: white;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+/* --- TAG MINIMALISTA DE PLAY-OFF --- */
+.playoff-tag-minimal {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-left: 4px;
+  letter-spacing: 0.3px;
+  opacity: 0.8;
+}
+
 .team-info-section {
   display: flex;
   align-items: center;

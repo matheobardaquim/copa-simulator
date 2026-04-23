@@ -3,12 +3,14 @@ import axios from 'axios'
 import TeamList from './TeamList'
 import PotCustomizer from './PotCustomizer'
 import GroupsDisplay from './GroupsDisplay'
+import ResultScreen from './ResultScreen'
 import './App.css'
 
 function App() {
   const [grupos, setGrupos] = useState(null)
   const [loadingSorteio, setLoadingSorteio] = useState(false)
   const [etapa, setEtapa] = useState('lista') // 'lista', 'customizacao' ou 'resultado'
+  const [viewMode, setViewMode] = useState('sorteio-animado') // 'sorteio-animado' ou 'grupos-completos'
   const [logs, setLogs] = useState(null)
   const [mostrarLogs, setMostrarLogs] = useState(false)
   const API_BASE = import.meta.env.VITE_API_URL || '';
@@ -18,6 +20,7 @@ function App() {
   const handleIniciarSorteio = async () => {
     try {
       setLoadingSorteio(true)
+      setViewMode('sorteio-animado') // Começar com o sorteio animado
       const response = await axios.post(`${API_BASE}/api/sorteio`, {
         pais_sede: paisSede,
         potes_customizados: null
@@ -39,6 +42,7 @@ function App() {
   const handleSorteioComCustomizacao = async (potes) => {
     try {
       setLoadingSorteio(true)
+      setViewMode('sorteio-animado') // Começar com o sorteio animado
       const response = await axios.post(`${API_BASE}/api/sorteio`, {
         pais_sede: paisSede,
         potes_customizados: potes
@@ -134,9 +138,38 @@ function App() {
         </div>
       ) : (
         <div className="resultado-section">
-          <GroupsDisplay grupos={grupos} paisSede={paisSede} />
+          {viewMode === 'sorteio-animado' ? (
+            <ResultScreen 
+              grupos={grupos} 
+              paisSede={paisSede}
+              onVoltar={() => setViewMode('grupos-completos')}
+            />
+          ) : (
+            <>
+              <GroupsDisplay grupos={grupos} paisSede={paisSede} />
+              
+              <div className="resultado-actions">
+                <button 
+                  className="voltar-btn" 
+                  onClick={() => setViewMode('sorteio-animado')}
+                >
+                  ← Ver Sorteio Animado
+                </button>
+                <button className="voltar-btn" onClick={handleVoltar}>
+                  ← Voltar para Seleção de Times
+                </button>
+                <button 
+                  className="novo-sorteio-btn"
+                  onClick={handleIniciarSorteio}
+                  disabled={loadingSorteio}
+                >
+                  {loadingSorteio ? '⏳ Sorteando...' : '🔄 Fazer Novo Sorteio'}
+                </button>
+              </div>
+            </>
+          )}
           
-          {logs && (
+          {logs && viewMode === 'grupos-completos' && (
             <div className="logs-section">
               <button 
                 className="toggle-logs-btn"
@@ -151,19 +184,6 @@ function App() {
               )}
             </div>
           )}
-          
-          <div className="resultado-actions">
-            <button className="voltar-btn" onClick={handleVoltar}>
-              ← Voltar para Seleção de Times
-            </button>
-            <button 
-              className="novo-sorteio-btn"
-              onClick={handleIniciarSorteio}
-              disabled={loadingSorteio}
-            >
-              {loadingSorteio ? '⏳ Sorteando...' : '🔄 Fazer Novo Sorteio'}
-            </button>
-          </div>
         </div>
       )}
     </div>

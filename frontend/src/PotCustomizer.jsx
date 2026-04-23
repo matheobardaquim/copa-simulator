@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Edit3, X } from 'lucide-react'
+import { Edit3, X, Lock } from 'lucide-react'
 import TeamDraftSelector from './TeamDraftSelector'
 import CountryFlag from './CountryFlag'
 import './PotCustomizer.css'
@@ -13,9 +13,42 @@ function PotCustomizer({ onSorteio, paisSede }) {
   const [timeParaTrocar, setTimeParaTrocar] = useState(null) // { pote, time, index }
   const API_BASE = import.meta.env.VITE_API_URL || '';
 
+  // --- IDS DOS TIMES ANFITRIÕES (NÃO PODEM SER MOVIDOS DO POTE 1) ---
+  const HOST_IDS = [1, 5, 13]; // México, Canadá, EUA
+
   useEffect(() => {
     carregarPotesDefault()
   }, [])
+
+  // --- FUNÇÃO DE VALIDAÇÃO: BLOQUEIA APENAS ANFITRIÕES ---
+  const isTeamLocked = (team, potNumber) => {
+    const potNum = parseInt(potNumber);
+    
+    // ÚNICA REGRA: Anfitriões bloqueados no Pote 1
+    if (potNum === 1 && HOST_IDS.includes(team.id)) {
+      return true;
+    }
+    
+    return false;
+  }
+
+  // --- FUNÇÃO AUXILIAR: IDENTIFICA SE É VAGA VIA PLAY-OFF ---
+  // Play-off são os 6 últimos times do Pote 4 (índices 6-11)
+  const isPlayoffSlot = (potNumber, teamIndex) => {
+    const potNum = parseInt(potNumber);
+    return potNum === 4 && teamIndex >= 6;
+  }
+
+  // --- RETORNA O BADGE TEXT OU NULL ---
+  // A tag (PO) aparece SEMPRE se for slot de play-off, independente se foi trocado
+  const getPlayoffBadgeText = (team, potNumber, teamIndex) => {
+    const isPlayoff = isPlayoffSlot(potNumber, teamIndex);
+    
+    // Se é slot de play-off (índices 8-11 do Pote 4), retorna true
+    if (isPlayoff) return true;
+    
+    return null;
+  }
 
   const carregarPotesDefault = async () => {
     try {
@@ -73,7 +106,8 @@ function PotCustomizer({ onSorteio, paisSede }) {
     const novoTime = {
       ...timeDraft,
       pote: timeParaTrocar.pote, // Mantém o número do pote original
-      grupo: timeParaTrocar.time.grupo // Mantém grupo se existir
+      grupo: timeParaTrocar.time.grupo, // Mantém grupo se existir
+      origem: 'draft' // MARCA como trocado pelo usuário
     }
 
     // Substitui o time no pote
@@ -146,40 +180,56 @@ function PotCustomizer({ onSorteio, paisSede }) {
                 </span>
               </div>
               <div className="teams-list">
-                {times.map((time, index) => (
-                  <div
-                    key={time.id}
-                    className="team-draggable"
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, time, parseInt(numPote))}
-                  >
-                    <div className="team-info-section">
-                      <CountryFlag
-                        sigla={time.sigla}
-                        nome={time.nome}
-                        tamanho="pequeno"
-                      />
-                      <span className="team-name">{time.nome}</span>
+                {times.map((time, index) => {
+                  const isLocked = isTeamLocked(time, numPote);
+                  const isPlayoffBadge = getPlayoffBadgeText(time, numPote, index);
+                  
+                  return (
+                    <div
+                      key={time.id}
+                      className={`team-draggable ${isLocked ? 'team-locked' : ''}`}
+                      draggable={!isLocked}
+                      onDragStart={(e) => !isLocked && handleDragStart(e, time, parseInt(numPote))}
+                    >
+                      <div className="team-info-section">
+                        <CountryFlag
+                          sigla={time.sigla}
+                          nome={time.nome}
+                          tamanho="pequeno"
+                        />
+                        <span className="team-name">
+                          {time.nome}
+                          {isPlayoffBadge && <span className="playoff-tag-minimal">(PO)</span>}
+                        </span>
+                      </div>
+                      <span className="confederacao-tag">{time.confederacao}</span>
+                      <div className="team-actions">
+                        {isLocked ? (
+                          <div className="lock-indicator" title="Time anfitrião - Bloqueado pela FIFA">
+                            <Lock size={16} />
+                          </div>
+                        ) : (
+                          <>
+                            <button
+                              className="draft-btn"
+                              onClick={() => abrirDraftParaTrocar(parseInt(numPote), time, index)}
+                              title="Substituir este time por outro"
+                            >
+                              <Edit3 size={16} />
+                            </button>
+                            <button
+                              className="remove-btn"
+                              onClick={() => removerTimePote(parseInt(numPote), time.id)}
+                              title="Remover este time do pote"
+                            >
+                              <X size={16} />
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
-                    <span className="confederacao-tag">{time.confederacao}</span>
-                    <div className="team-actions">
-                      <button
-                        className="draft-btn"
-                        onClick={() => abrirDraftParaTrocar(parseInt(numPote), time, index)}
-                        title="Substituir este time por outro"
-                      >
-                        <Edit3 size={16} />
-                      </button>
-                      <button
-                        className="remove-btn"
-                        onClick={() => removerTimePote(parseInt(numPote), time.id)}
-                        title="Remover este time do pote"
-                      >
-                        <X size={16} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           );
