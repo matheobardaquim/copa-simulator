@@ -1,0 +1,13 @@
+[
+  { "rank": 85, "nome": "Nova Zelândia", "pontos": 1281.57, "confederacao": "OFC", "sigla": "NZL" },
+  { "rank": 151, "nome": "Nova Caledônia", "pontos": 1036.95, "confederacao": "OFC", "sigla": "NCL" },
+  { "rank": 153, "nome": "Ilhas Salomão", "pontos": 1031.89, "confederacao": "OFC", "sigla": "SOL" },
+  { "rank": 154, "nome": "Fiji", "pontos": 1029.70, "confederacao": "OFC", "sigla": "FIJ" },
+  { "rank": 157, "nome": "Taiti", "pontos": 1019.04, "confederacao": "OFC", "sigla": "TAH" },
+  { "rank": 160, "nome": "Vanuatu", "pontos": 997.01, "confederacao": "OFC", "sigla": "VAN" },
+  { "rank": 168, "nome": "Papua-Nova Guiné", "pontos": 974.90, "confederacao": "OFC", "sigla": "PNG" },
+  { "rank": 188, "nome": "Ilhas Cook", "pontos": 877.53, "confederacao": "OFC", "sigla": "COK" },
+  { "rank": 190, "nome": "Samoa", "pontos": 876.41, "confederacao": "OFC", "sigla": "SAM" },
+  { "rank": 192, "nome": "Samoa Americana", "pontos": 871.61, "confederacao": "OFC", "sigla": "ASA" },
+  { "rank": 199, "nome": "Tonga", "pontos": 835.64, "confederacao": "OFC", "sigla": "TGA" }
+]

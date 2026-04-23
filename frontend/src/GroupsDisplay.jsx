@@ -1,3 +1,4 @@
+import CountryFlag from './CountryFlag'
 import './GroupsDisplay.css'
 
 function GroupsDisplay({ grupos, paisSede }) {
@@ -30,6 +31,11 @@ function GroupsDisplay({ grupos, paisSede }) {
               {grupoData.times.map((time, index) => (
                 <div key={time.id} className="team-item">
                   <span className="team-number">{index + 1}</span>
+                  <CountryFlag
+                    sigla={time.sigla}
+                    nome={time.nome}
+                    tamanho="pequeno"
+                  />
                   <span className="team-name">{time.nome}</span>
                   <span
                     className="confederacao-badge"

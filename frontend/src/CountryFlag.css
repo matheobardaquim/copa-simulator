@@ -1,0 +1,71 @@
+/* CountryFlag - Componente reutilizável de bandeiras */
+
+.country-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  vertical-align: middle;
+}
+
+/* Tamanhos disponíveis */
+.country-flag-pequeno .flag-image {
+  width: 24px;
+  height: auto;
+  min-height: 16px;
+  max-height: 16px;
+}
+
+.country-flag-medio .flag-image {
+  width: 32px;
+  height: auto;
+  min-height: 21px;
+  max-height: 21px;
+}
+
+.country-flag-grande .flag-image {
+  width: 48px;
+  height: auto;
+  min-height: 32px;
+  max-height: 32px;
+}
+
+/* Estilo da imagem da bandeira */
+.flag-image {
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: block;
+  object-fit: cover;
+}
+
+.flag-image.loading {
+  opacity: 0.6;
+}
+
+.flag-image.loaded {
+  opacity: 1;
+}
+
+.flag-image:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+/* Nome do país (opcional) */
+.country-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #2c3e50;
+  white-space: nowrap;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .country-flag {
+    gap: 6px;
+  }
+
+  .country-name {
+    font-size: 12px;
+  }
+}

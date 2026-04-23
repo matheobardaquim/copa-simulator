@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import CountryFlag from './CountryFlag'
 import './TeamList.css'
 
 function TeamList() {
@@ -71,6 +72,13 @@ function TeamList() {
           {timesFiltrados.length > 0 ? (
             timesFiltrados.map(time => (
               <div key={time.id} className={`team-card pote-${time.pote}`}>
+                <div className="team-flag-section">
+                  <CountryFlag
+                    sigla={time.sigla}
+                    nome={time.nome}
+                    tamanho="grande"
+                  />
+                </div>
                 <div className="team-header">
                   <h3>{time.nome}</h3>
                   <span className={`pote-badge pote-${time.pote}`}>Pote {time.pote}</span>

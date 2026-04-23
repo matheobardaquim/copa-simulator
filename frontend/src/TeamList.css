@@ -60,6 +60,15 @@
   transition: all 0.3s;
   border: 2px solid transparent;
   background: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.team-flag-section {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
 }
 
 .team-card.pote-1 {

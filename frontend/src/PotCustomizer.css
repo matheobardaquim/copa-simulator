@@ -118,11 +118,32 @@
   justify-content: space-between;
   align-items: center;
   border: 1px solid #e2e8f0;
+  gap: 10px;
+  transition: all 0.2s;
+}
+
+.team-draggable:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  border-color: #cbd5e0;
 }
 
 .team-draggable:active { cursor: grabbing; }
 
-.team-name { font-weight: 700; color: #2d3748; }
+.team-info-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.team-name { 
+  font-weight: 700; 
+  color: #2d3748;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .confederacao-tag {
   font-size: 0.65rem;
@@ -132,6 +153,54 @@
   background: #edf2f7;
   border-radius: 4px;
   color: #718096;
+  flex-shrink: 0;
+}
+
+.team-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.draft-btn,
+.remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  color: #4a5568;
+}
+
+.draft-btn {
+  background: #edf2f7;
+  color: #667eea;
+}
+
+.draft-btn:hover {
+  background: #667eea;
+  color: white;
+  transform: scale(1.1);
+}
+
+.remove-btn {
+  background: #fff5f5;
+  color: #e53e3e;
+}
+
+.remove-btn:hover {
+  background: #e53e3e;
+  color: white;
+  transform: scale(1.1);
+}
+
+.draft-btn:active,
+.remove-btn:active {
+  transform: scale(0.95);
 }
 
 /* Ações Finais */

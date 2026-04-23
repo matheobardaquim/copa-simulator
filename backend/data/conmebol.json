@@ -1,0 +1,12 @@
+[
+  { "rank": 3, "nome": "Argentina", "pontos": 1874.81, "confederacao": "CONMEBOL", "sigla": "ARG" },
+  { "rank": 6, "nome": "Brasil", "pontos": 1761.16, "confederacao": "CONMEBOL", "sigla": "BRA" },
+  { "rank": 13, "nome": "Colômbia", "pontos": 1693.09, "confederacao": "CONMEBOL", "sigla": "COL" },
+  { "rank": 17, "nome": "Uruguai", "pontos": 1673.07, "confederacao": "CONMEBOL", "sigla": "URU" },
+  { "rank": 23, "nome": "Equador", "pontos": 1594.78, "confederacao": "CONMEBOL", "sigla": "ECU" },
+  { "rank": 40, "nome": "Paraguai", "pontos": 1503.50, "confederacao": "CONMEBOL", "sigla": "PAR" },
+  { "rank": 49, "nome": "Venezuela", "pontos": 1468.05, "confederacao": "CONMEBOL", "sigla": "VEN" },
+  { "rank": 53, "nome": "Peru", "pontos": 1455.87, "confederacao": "CONMEBOL", "sigla": "PER" },
+  { "rank": 54, "nome": "Chile", "pontos": 1455.28, "confederacao": "CONMEBOL", "sigla": "CHI" },
+  { "rank": 76, "nome": "Bolívia", "pontos": 1329.42, "confederacao": "CONMEBOL", "sigla": "BOL" }
+]

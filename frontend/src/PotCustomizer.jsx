@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Edit3, X } from 'lucide-react'
+import TeamDraftSelector from './TeamDraftSelector'
+import CountryFlag from './CountryFlag'
 import './PotCustomizer.css'
 
 function PotCustomizer({ onSorteio, paisSede }) {
   const [potes, setPotes] = useState({})
   const [tempoExibicao, setTempoExibicao] = useState('todos')
   const [loadingSorteio, setLoadingSorteio] = useState(false)
+  const [draftAberto, setDraftAberto] = useState(false)
+  const [timeParaTrocar, setTimeParaTrocar] = useState(null) // { pote, time, index }
   const API_BASE = import.meta.env.VITE_API_URL || '';
 
   useEffect(() => {
@@ -54,6 +59,36 @@ function PotCustomizer({ onSorteio, paisSede }) {
       }
       setPotes(novosPotes)
     }
+  }
+
+  const abrirDraftParaTrocar = (pote, time, index) => {
+    setTimeParaTrocar({ pote, time, index })
+    setDraftAberto(true)
+  }
+
+  const trocarTimePorDraft = (timeDraft) => {
+    if (!timeParaTrocar) return
+
+    const novosPotes = { ...potes }
+    const novoTime = {
+      ...timeDraft,
+      pote: timeParaTrocar.pote, // Mantém o número do pote original
+      grupo: timeParaTrocar.time.grupo // Mantém grupo se existir
+    }
+
+    // Substitui o time no pote
+    novosPotes[timeParaTrocar.pote][timeParaTrocar.index] = novoTime
+
+    setPotes(novosPotes)
+    setTimeParaTrocar(null)
+    setDraftAberto(false)
+  }
+
+  const removerTimePote = (pote, timeId) => {
+    setPotes({
+      ...potes,
+      [pote]: potes[pote].filter(t => t.id !== timeId)
+    })
   }
 
   const handleIniciarSorteio = async () => {
@@ -111,15 +146,38 @@ function PotCustomizer({ onSorteio, paisSede }) {
                 </span>
               </div>
               <div className="teams-list">
-                {times.map(time => (
+                {times.map((time, index) => (
                   <div
                     key={time.id}
                     className="team-draggable"
                     draggable
                     onDragStart={(e) => handleDragStart(e, time, parseInt(numPote))}
                   >
-                    <span className="team-name">{time.nome}</span>
+                    <div className="team-info-section">
+                      <CountryFlag
+                        sigla={time.sigla}
+                        nome={time.nome}
+                        tamanho="pequeno"
+                      />
+                      <span className="team-name">{time.nome}</span>
+                    </div>
                     <span className="confederacao-tag">{time.confederacao}</span>
+                    <div className="team-actions">
+                      <button
+                        className="draft-btn"
+                        onClick={() => abrirDraftParaTrocar(parseInt(numPote), time, index)}
+                        title="Substituir este time por outro"
+                      >
+                        <Edit3 size={16} />
+                      </button>
+                      <button
+                        className="remove-btn"
+                        onClick={() => removerTimePote(parseInt(numPote), time.id)}
+                        title="Remover este time do pote"
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -153,6 +211,18 @@ function PotCustomizer({ onSorteio, paisSede }) {
             )
           ))}
         </div>
+      )}
+
+      {/* --- MODAL DE DRAFT --- */}
+      {draftAberto && (
+        <TeamDraftSelector
+          timesEscolhidos={Object.values(potes).flat()}
+          onSelectTime={trocarTimePorDraft}
+          onClose={() => {
+            setDraftAberto(false)
+            setTimeParaTrocar(null)
+          }}
+        />
       )}
     </div>
   )
