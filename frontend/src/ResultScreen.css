@@ -487,8 +487,30 @@
 
 /* Footer */
 .actions-footer {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
   margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn-voltar-inicio {
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  color: #1a1a1a;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-voltar-inicio:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.4);
 }
 
 .btn-voltar {

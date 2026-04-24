@@ -39,8 +39,16 @@ function TeamList() {
     return times.filter(t => t.confederacao === confederacao).length
   }
 
-  return (
+ return (
     <div className="team-list-container">
+      
+      {/* TÍTULO MOVIDO PARA CIMA, FORA DOS FILTROS */} 
+      <div className="team-list-header">
+        <h2>🌍 Seleções do Simulador</h2>
+        <p>Estas são as 48 seleções classificadas para a Copa. O sistema usa os potes e seleções reais quando é feito o sorteio padrão.</p>
+      </div>
+
+      {/* FILTROS LOGO ABAIXO */}
       <div className="filters">
         <div className="filter-group">
           <label>Confederação:</label>
@@ -52,7 +60,7 @@ function TeamList() {
             ))}
           </select>
         </div>
-
+        
         <div className="filter-group">
           <label>Pote:</label>
           <select value={filtroPote} onChange={(e) => setFiltroPote(e.target.value)}>

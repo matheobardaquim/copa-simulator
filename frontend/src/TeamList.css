@@ -1,10 +1,38 @@
+/* ===== TEAM LIST - GLASSMORPHISM COPA 2026 ===== */
+
 .team-list-container {
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  background: rgba(22, 38, 70, 0.6);
+  backdrop-filter: blur(15px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
+/* --- CABEÇALHO DA LISTA --- */
+.team-list-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.team-list-header h2 {
+  color: #fbbf24; /* Amarelo Dourado */
+  font-size: 1.8rem;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.team-list-header p {
+  color: #ffffff; /* Branco puro */
+  opacity: 0.9;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* --- FILTROS --- */
 .filters {
   display: flex;
   gap: 1.5rem;
@@ -19,152 +47,162 @@
 }
 
 .filter-group label {
-  font-weight: 600;
-  color: #333;
+  font-weight: 700;
+  color: #cbd5e1;
   font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .filter-group select {
-  padding: 0.7rem 1rem;
-  border: 2px solid #667eea;
-  border-radius: 8px;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  background: white;
-  color: #333;
-  transition: border-color 0.3s;
-  min-width: 200px;
+  background: rgba(0, 0, 0, 0.3); /* Vidro escuro */
+  color: #ffffff;
+  transition: all 0.3s ease;
+  min-width: 220px;
+  backdrop-filter: blur(10px);
 }
 
-.filter-group select:hover {
-  border-color: #764ba2;
-}
-
+.filter-group select:hover,
 .filter-group select:focus {
   outline: none;
-  border-color: #764ba2;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #fbbf24;
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
 }
 
+.filter-group select option {
+  background: #0d1f3c;
+  color: #fff;
+}
+
+/* --- GRID DE TIMES --- */
 .teams-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
 .team-card {
-  padding: 1.2rem;
-  border-radius: 10px;
+  padding: 1.5rem;
+  border-radius: 16px;
   cursor: pointer;
-  transition: all 0.3s;
-  border: 2px solid transparent;
-  background: #f8f9fa;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(5px);
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
+.team-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%) !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Cores dos Potes na Borda Esquerda (MAIS VIBRANTES) */
+.team-card.pote-1 { border-left: 4px solid #fbbf24 !important; } /* Ouro */
+.team-card.pote-2 { border-left: 4px solid #e2e8f0 !important; } /* Prata Claro */
+.team-card.pote-3 { border-left: 4px solid #f97316 !important; } /* Laranja Brilhante */
+.team-card.pote-4 { border-left: 4px solid #38bdf8 !important; } /* Azul Celeste */
+
+.team-card.pote-1:hover { border-color: #fcd34d !important; }
+.team-card.pote-2:hover { border-color: #ffffff !important; }
+.team-card.pote-3:hover { border-color: #fdba74 !important; }
+.team-card.pote-4:hover { border-color: #7dd3fc !important; }
+
 .team-flag-section {
   display: flex;
   justify-content: center;
   padding: 8px 0;
-}
-
-.team-card.pote-1 {
-  border-left: 5px solid #ffd700;
-  background: linear-gradient(135deg, #fffef7 0%, #fff9e6 100%);
-}
-
-.team-card.pote-2 {
-  border-left: 5px solid #c0c0c0;
-  background: linear-gradient(135deg, #fafaf8 0%, #f0f0ec 100%);
-}
-
-.team-card.pote-3 {
-  border-left: 5px solid #cd7f32;
-  background: linear-gradient(135deg, #fefbf6 0%, #f9f3eb 100%);
-}
-
-.team-card.pote-4 {
-  border-left: 5px solid #728791;
-  background: linear-gradient(135deg, #f5f6f7 0%, #eaeef2 100%);
-}
-
-.team-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.2);
-  border-color: #667eea;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
 }
 
 .team-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.8rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  gap: 10px;
 }
 
 .team-header h3 {
   margin: 0;
-  color: #333;
+  color: #ffffff !important;
   font-size: 1.1rem;
   flex: 1;
-}
-
-.pote-badge {
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.pote-badge.pote-1 {
-  background: #ffd700;
-  color: #333;
+/* Badges Translúcidos (MAIS VIBRANTES) */
+.pote-badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+  text-transform: uppercase;
 }
 
-.pote-badge.pote-2 {
-  background: #c0c0c0;
-  color: #333;
-}
-
-.pote-badge.pote-3 {
-  background: #cd7f32;
-  color: white;
-}
-
-.pote-badge.pote-4 {
-  background: #728791;
-  color: white;
-}
+.pote-badge.pote-1 { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.4); }
+.pote-badge.pote-2 { background: rgba(226, 232, 240, 0.2); color: #e2e8f0; border: 1px solid rgba(226, 232, 240, 0.4); }
+.pote-badge.pote-3 { background: rgba(249, 115, 22, 0.2); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.4); }
+.pote-badge.pote-4 { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
 
 .team-confederation {
   margin: 0;
-  color: #666;
-  font-size: 0.9rem;
-  font-weight: 500;
+  color: #a5b4fc;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
+/* --- ESTADOS DE CARREGAMENTO E STATS --- */
 .loading-text {
   text-align: center;
-  color: #999;
+  color: #ffffff;
   padding: 2rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .no-results {
   text-align: center;
-  color: #999;
-  padding: 2rem;
+  color: #ffffff;
+  padding: 3rem;
   grid-column: 1 / -1;
+  font-size: 1.1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
 }
 
 .stats {
-  padding: 1rem;
-  background: #f0f4ff;
-  border-radius: 8px;
+  padding: 1.2rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
   text-align: center;
-  color: #667eea;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Correção definitiva para o texto que estava preto */
+.stats p {
+  color: #ffffff !important; 
+  margin: 0;
   font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.stats strong {
+  color: #fbbf24;
+  font-size: 1.2rem;
 }

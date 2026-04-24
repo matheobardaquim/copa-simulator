@@ -1,14 +1,13 @@
 import { useState, useEffect, useMemo } from 'react'
 import { ChevronRight, SkipForward, RotateCcw } from 'lucide-react'
 import CountryFlag from './CountryFlag'
-import HeaderSorteio from './HeaderSorteio'
 import './ResultScreen.css'
 
 /**
  * Componente para visualização animada e sequencial do sorteio
  * Exibe 48 passos: Pote 1 (Grupos A-L), Pote 2 (A-L), Pote 3 (A-L), Pote 4 (A-L)
  */
-function ResultScreen({ grupos, paisSede, onVoltar }) {
+function ResultScreen({ grupos, paisSede, onVoltar, onVoltarInicio }) {
   const [passoAtual, setPassoAtual] = useState(0)
   const [historicoPassos, setHistoricoPassos] = useState([])
 
@@ -32,15 +31,14 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
     return labels[index] || null;
   }
 
-  // --- CONSTRUIR FILA PLANA DE 48 PASSOS (CORREÇÃO: usar índices diretos) ---
+  // --- CONSTRUIR FILA PLANA DE 48 PASSOS ---
   const filaCompleta = useMemo(() => {
     const fila = []
     const nomesGrupos = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
     
-    // Pote 1 (índices 0-11): Grupos A-L
     nomesGrupos.forEach((nomeGrupo, idx) => {
       const temposGrupo = grupos[nomeGrupo]?.times || []
-      const time1Pote = temposGrupo[0] // índice 0 = Pote 1
+      const time1Pote = temposGrupo[0]
       if (time1Pote) {
         fila.push({
           passo: idx,
@@ -49,15 +47,12 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
           time: time1Pote,
           descricao: `Pote 1 - Grupo ${nomeGrupo}`
         })
-      } else {
-        console.warn(`⚠️ Grupo ${nomeGrupo} sem time do Pote 1`)
       }
     })
 
-    // Pote 2 (índices 12-23): Grupos A-L
     nomesGrupos.forEach((nomeGrupo, idx) => {
       const temposGrupo = grupos[nomeGrupo]?.times || []
-      const time2Pote = temposGrupo[1] // índice 1 = Pote 2
+      const time2Pote = temposGrupo[1]
       if (time2Pote) {
         fila.push({
           passo: 12 + idx,
@@ -66,15 +61,12 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
           time: time2Pote,
           descricao: `Pote 2 - Grupo ${nomeGrupo}`
         })
-      } else {
-        console.warn(`⚠️ Grupo ${nomeGrupo} sem time do Pote 2`)
       }
     })
 
-    // Pote 3 (índices 24-35): Grupos A-L
     nomesGrupos.forEach((nomeGrupo, idx) => {
       const temposGrupo = grupos[nomeGrupo]?.times || []
-      const time3Pote = temposGrupo[2] // índice 2 = Pote 3
+      const time3Pote = temposGrupo[2]
       if (time3Pote) {
         fila.push({
           passo: 24 + idx,
@@ -83,15 +75,12 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
           time: time3Pote,
           descricao: `Pote 3 - Grupo ${nomeGrupo}`
         })
-      } else {
-        console.warn(`⚠️ Grupo ${nomeGrupo} sem time do Pote 3`)
       }
     })
 
-    // Pote 4 (índices 36-47): Grupos A-L
     nomesGrupos.forEach((nomeGrupo, idx) => {
       const temposGrupo = grupos[nomeGrupo]?.times || []
-      const time4Pote = temposGrupo[3] // índice 3 = Pote 4
+      const time4Pote = temposGrupo[3]
       if (time4Pote) {
         fila.push({
           passo: 36 + idx,
@@ -100,69 +89,47 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
           time: time4Pote,
           descricao: `Pote 4 - Grupo ${nomeGrupo}`
         })
-      } else {
-        console.warn(`⚠️ Grupo ${nomeGrupo} sem time do Pote 4`)
       }
     })
-
-    // --- LOG DE AUDITORIA ---
-    console.log(`✅ Fila construída com ${fila.length} passos (esperado: 48)`)
-    if (fila.length !== 48) {
-      console.error(`❌ ERRO: Apenas ${fila.length}/48 times encontrados!`)
-    }
 
     return fila
   }, [grupos])
 
-  // --- FUNÇÃO: IDENTIFICAR BLOCO DE GRUPO (4x4) ---
   const getBloco = (nomeGrupo) => {
     const blocos = {
-      1: ['A', 'B', 'C', 'D'],      // Bloco 1: 4 grupos
-      2: ['E', 'F', 'G', 'H'],      // Bloco 2: 4 grupos
-      3: ['I', 'J', 'K', 'L']       // Bloco 3: 4 grupos
+      1: ['A', 'B', 'C', 'D'],
+      2: ['E', 'F', 'G', 'H'],
+      3: ['I', 'J', 'K', 'L']
     }
     for (const [num, grupos_list] of Object.entries(blocos)) {
       if (grupos_list.includes(nomeGrupo)) return parseInt(num)
     }
-    return 1 // fallback
+    return 1
   }
 
-  // --- FUNÇÃO: DEFINIR BLOCO VISÍVEL BASEADO NO PASSO ATUAL ---
   const getBlocoAtual = () => {
-    // Se passoAtual === 0 ou não há fila, retorna Bloco 1
     if (passoAtual === 0 || filaCompleta.length === 0) return 1;
-    
-    // Acessa o passo ATUAL (não anterior) para detectar o bloco correto
     const passoIndex = Math.min(passoAtual, filaCompleta.length - 1);
     const grupoAtual = filaCompleta[passoIndex]?.grupo;
-    
     if (!grupoAtual) return 1;
     return getBloco(grupoAtual);
   }
 
-  // --- LÓGICA DE LAYOUT DINÂMICO ---
-  // Se sorteio terminou (passoAtual === 48), mostra todos os 12 grupos
-  // Senão, mostra apenas o bloco atual
   const mostrarTodasGrupos = passoAtual === filaCompleta.length;
   const blocoVisivel = getBlocoAtual()
   const gruposFiltrados = mostrarTodasGrupos 
     ? Object.entries(grupos)
     : Object.entries(grupos).filter(([nomeGrupo]) => getBloco(nomeGrupo) === blocoVisivel)
 
-  // --- CONSTRUIR MAPA DE VISIBILIDADE: TIME -> ÍNDICE NA FILA ---
   const mapaVisibilidade = useMemo(() => {
     const mapa = {};
     filaCompleta.forEach(passo => {
       const chave = `${passo.grupo}-${passo.time.id}`;
-      mapa[chave] = passo.passo; // índice na fila
+      mapa[chave] = passo.passo;
     });
     return mapa;
   }, [filaCompleta]);
 
-  // --- FUNÇÃO: VERIFICAR SE TIME DEVE SER EXIBIDO --- (DEPRECATED - usar mapaVisibilidade)
-  // Mantido para compatibilidade futura se necessário
-
-  // --- ATUALIZAR HISTÓRICO QUANDO PASSO AVANÇA ---
   useEffect(() => {
     if (passoAtual > 0 && filaCompleta[passoAtual - 1]) {
       const passoAnterior = filaCompleta[passoAtual - 1]
@@ -173,7 +140,6 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
     }
   }, [passoAtual, filaCompleta])
 
-  // --- CONTROLES DE FLUXO ---
   const avancarProximo = () => {
     if (passoAtual < filaCompleta.length) {
       setPassoAtual(prev => prev + 1)
@@ -189,7 +155,6 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
     setHistoricoPassos([])
   }
 
-  // --- DADOS DO PASSO ATUAL ---
   const passoInfo = passoAtual < filaCompleta.length 
     ? filaCompleta[passoAtual] 
     : null
@@ -199,14 +164,13 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
 
   return (
     <div className="result-screen-container">
-      <HeaderSorteio paisSede={paisSede} />
+      {/* HeaderSorteio removido para usar o cabeçalho global do App.jsx */}
       
       <div className="result-header">
         <h1>⚽ Sorteio em Andamento</h1>
         <p className="pais-sede">Países Sede: <strong>{paisSede}</strong></p>
       </div>
 
-      {/* --- BARRA DE PROGRESSO --- */}
       <div className="progress-section">
         <div className="progress-bar">
           <div 
@@ -219,7 +183,6 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
         </p>
       </div>
 
-      {/* --- DISPLAY DO TIME ATUAL --- */}
       {tempoAtual ? (
         <div className="current-team-section">
           <div className="passo-titulo">{passoInfo.descricao}</div>
@@ -264,7 +227,6 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
         </div>
       )}
 
-      {/* --- BOTÕES DE CONTROLE --- */}
       <div className="controls-section">
         <button
           className="btn-proximo"
@@ -293,35 +255,17 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
         </button>
       </div>
 
-      {/* --- PREVIEW DE GRUPOS (COM ABAS DE BLOCOS) --- */}
       <div className="groups-preview-section">
         <h3>📊 Visualização dos Grupos</h3>
         
-        {/* --- ABAS DE BLOCOS (Ocultas quando sorteio termina) --- */}
         {!mostrarTodasGrupos && (
           <div className="block-tabs">
-            <button 
-              className={`block-tab ${blocoVisivel === 1 ? 'active' : ''}`}
-              title="Grupos A, B, C, D"
-            >
-              Bloco 1: A-D
-            </button>
-            <button 
-              className={`block-tab ${blocoVisivel === 2 ? 'active' : ''}`}
-              title="Grupos E, F, G, H"
-            >
-              Bloco 2: E-H
-            </button>
-            <button 
-              className={`block-tab ${blocoVisivel === 3 ? 'active' : ''}`}
-              title="Grupos I, J, K, L"
-            >
-              Bloco 3: I-L
-            </button>
+            <button className={`block-tab ${blocoVisivel === 1 ? 'active' : ''}`}>Bloco 1: A-D</button>
+            <button className={`block-tab ${blocoVisivel === 2 ? 'active' : ''}`}>Bloco 2: E-H</button>
+            <button className={`block-tab ${blocoVisivel === 3 ? 'active' : ''}`}>Bloco 3: I-L</button>
           </div>
         )}
         
-        {/* --- INDICADOR DE FIM DE SORTEIO --- */}
         {mostrarTodasGrupos && (
           <div className="sorteio-fim-indicator">
             ✅ Sorteio Finalizado - Visualização Completa
@@ -342,22 +286,14 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
                   return (
                     <div 
                       key={time.id} 
-                      className={`preview-team-item ${
-                        isVisible ? 'visible' : 'placeholder'
-                      } ${wasSorted ? 'sorteado' : ''}`}
+                      className={`preview-team-item ${isVisible ? 'visible' : 'placeholder'} ${wasSorted ? 'sorteado' : ''}`}
                     >
                       {isVisible ? (
                         <>
                           <span className="preview-team-number">{index + 1}</span>
-                          <CountryFlag
-                            sigla={time.sigla}
-                            nome={time.nome}
-                            tamanho="pequeno"
-                          />
+                          <CountryFlag sigla={time.sigla} nome={time.nome} tamanho="pequeno" />
                           <span className="preview-team-name">
                             {time.nome}
-                            {/* --- TAG DE PLAY-OFF (PO) --- */}
-                            {/* Mostra label específico dos 6 últimos times do Pote 4 */}
                             {time.pote === 4 && index >= 6 && (
                               <span className="playoff-tag-rs">{getPlayoffLabel(time.pote, index)}</span>
                             )}
@@ -366,9 +302,7 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
                       ) : (
                         <>
                           <span className="preview-team-number">{index + 1}</span>
-                          <div className="placeholder-content">
-                            <span className="placeholder-text">—</span>
-                          </div>
+                          <div className="placeholder-content"><span className="placeholder-text">—</span></div>
                         </>
                       )}
                     </div>
@@ -380,10 +314,13 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
         </div>
       </div>
 
-      {/* --- BOTÃO VOLTAR --- */}
+      {/* --- BOTÕES DE NAVEGAÇÃO --- */}
       <div className="actions-footer">
         <button className="btn-voltar" onClick={onVoltar}>
           ← Voltar para Personalizar
+        </button>
+        <button className="btn-voltar-inicio" onClick={onVoltarInicio}>
+          🏠 Tela Inicial
         </button>
       </div>
     </div>

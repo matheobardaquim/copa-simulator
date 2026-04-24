@@ -10,7 +10,7 @@ import './TeamDraftSelector.css'
  * @param {function} onSelectTime - Callback quando um time é selecionado
  * @param {function} onClose - Callback para fechar o seletor
  */
-function TeamDraftSelector({ timesEscolhidos = [], onSelectTime, onClose }) {
+function TeamDraftSelector({ timesEscolhidos = [], timesExtras = [], onSelectTime, onClose }) {
   const [timesDisponiveis, setTimesDisponiveis] = useState([])
   const [loading, setLoading] = useState(true)
   const [busca, setBusca] = useState('')
@@ -35,14 +35,21 @@ function TeamDraftSelector({ timesEscolhidos = [], onSelectTime, onClose }) {
     }
   }
 
+  // --- BLOCO CORRIGIDO (SEM DUPLICAÇÕES) ---
   const idsJaSelecionados = new Set(timesEscolhidos.map(t => t.id))
 
+  // 1. Junta os times da API com os times extras (que foram removidos pelo usuário)
+  const todosDisponiveisMap = new Map();
+  [...timesDisponiveis, ...timesExtras].forEach(t => todosDisponiveisMap.set(t.id, t));
+
+  // 2. Atualiza a lista de confederações para ler dessa nova lista completa
   const confederacoes = [
     'TODOS',
-    ...new Set(timesDisponiveis.map(t => t.confederacao))
+    ...new Set(Array.from(todosDisponiveisMap.values()).map(t => t.confederacao))
   ]
 
-  const timesFiltrados = timesDisponiveis
+  // 3. O filtro agora roda em cima do Array unificado
+  const timesFiltrados = Array.from(todosDisponiveisMap.values())
     .filter(t => !idsJaSelecionados.has(t.id))
     .filter(t => {
       const matchBusca =
@@ -58,8 +65,9 @@ function TeamDraftSelector({ timesEscolhidos = [], onSelectTime, onClose }) {
     <div className="team-draft-selector-overlay">
       <div className="team-draft-selector-modal">
         <div className="modal-header">
-          <h2>🎯 Selecionar Time para Draft</h2>
-          <button className="close-btn" onClick={onClose} title="Fechar">
+          <h2>🌍 Database Global FIFA (211 Nações)</h2>
+          <div className="selection-count-pill">{timesFiltrados.length} disponíveis</div>
+          <button className="close-btn" onClick={onClose}>
             <X size={24} />
           </button>
         </div>

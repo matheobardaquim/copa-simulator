@@ -3,16 +3,16 @@ import axios from 'axios'
 import { Edit3, Lock } from 'lucide-react'
 import TeamDraftSelector from './TeamDraftSelector'
 import CountryFlag from './CountryFlag'
-import HeaderSorteio from './HeaderSorteio'
 import './PotCustomizer.css'
 
-function PotCustomizer({ onSorteio, paisSede }) {
+function PotCustomizer({ onSorteio, onVoltar, paisSede }) {
   const [potes, setPotes] = useState({})
   const [tempoExibicao, setTempoExibicao] = useState('todos')
   const [loadingSorteio, setLoadingSorteio] = useState(false)
   const [draftAberto, setDraftAberto] = useState(false)
   const [timeParaTrocar, setTimeParaTrocar] = useState(null) // { pote, time, index }
   const API_BASE = import.meta.env.VITE_API_URL || '';
+  const [timesRemovidos, setTimesRemovidos] = useState([]) // NOVA MEMÓRIA
 
   // --- IDS DOS TIMES ANFITRIÕES (NÃO PODEM SER MOVIDOS DO POTE 1) ---
   const HOST_IDS = [1, 2, 3]; // México, Canadá, EUA
@@ -52,8 +52,6 @@ function PotCustomizer({ onSorteio, paisSede }) {
     
     return labels[index] || null;
   }
-
-
 
   const carregarPotesDefault = async () => {
     try {
@@ -104,21 +102,25 @@ function PotCustomizer({ onSorteio, paisSede }) {
     setDraftAberto(true)
   }
 
-  const trocarTimePorDraft = (timeDraft) => {
+ const trocarTimePorDraft = (timeDraft) => {
     if (!timeParaTrocar) return
+
+    const timeSaindo = timeParaTrocar.time; // Guarda quem está saindo (Ex: Argentina)
 
     const novosPotes = { ...potes }
     const novoTime = {
       ...timeDraft,
-      pote: timeParaTrocar.pote, // Mantém o número do pote original
-      grupo: timeParaTrocar.time.grupo, // Mantém grupo se existir
-      origem: 'draft' // MARCA como trocado pelo usuário
+      pote: timeParaTrocar.pote, 
+      grupo: timeParaTrocar.time.grupo, 
+      origem: 'draft' 
     }
 
-    // Substitui o time no pote
     novosPotes[timeParaTrocar.pote][timeParaTrocar.index] = novoTime
-
     setPotes(novosPotes)
+
+    // Adiciona quem saiu na lista de removidos, e tira quem entrou (caso ele fosse um removido voltando)
+    setTimesRemovidos(prev => [...prev.filter(t => t.id !== timeDraft.id), timeSaindo])
+
     setTimeParaTrocar(null)
     setDraftAberto(false)
   }
@@ -134,12 +136,13 @@ function PotCustomizer({ onSorteio, paisSede }) {
   }
 
   return (
-    <div className="pot-customizer-container">
-      <HeaderSorteio paisSede={paisSede} />
-      
+    <div className="pot-customizer-container">      
       <div className="customizer-header">
-        <h2>🎯 Personalizar Potes</h2>
-        <p>Arraste os times. Cada pote <strong>deve ter exatamente 12 seleções</strong>.</p>
+        <h2>🎯 Sandbox de Seleções</h2>
+        <p>
+          Você tem acesso ao <strong>banco de dados global da FIFA (211 seleções)</strong>. 
+          Use o ícone <Edit3 size={14} style={{verticalAlign:'middle'}}/> para substituir qualquer time da Copa por um não classificado.
+        </p>
       </div>
 
       <div className="display-options">
@@ -230,6 +233,11 @@ function PotCustomizer({ onSorteio, paisSede }) {
       </div>
 
       <div className="customizer-actions">
+        {/* NOVO BOTÃO VOLTAR INSERIDO AQUI */}
+        <button className="voltar-btn-customizer" onClick={onVoltar}>
+          ← Voltar
+        </button>
+
         <button className="reset-btn" onClick={carregarPotesDefault}>
           ↻ Restaurar Padrão
         </button>
@@ -260,6 +268,7 @@ function PotCustomizer({ onSorteio, paisSede }) {
       {draftAberto && (
         <TeamDraftSelector
           timesEscolhidos={Object.values(potes).flat()}
+          timesExtras={timesRemovidos} /* ENVIA OS REMOVIDOS PARA O MODAL */
           onSelectTime={trocarTimePorDraft}
           onClose={() => {
             setDraftAberto(false)

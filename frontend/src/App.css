@@ -1,618 +1,317 @@
-/* ===== APP - ESTÉTICA COPA DO MUNDO 2026 PREMIUM ===== */
-
+/* ===== APP PREMIUM - LAYOUT BLINDADO & ANIMAÇÃO FLUIDA ===== */
 :root {
-  --primary-dark: #0d1f3c;
-  --primary-blue: #1a3a52;
+  --primary-dark: #000814;
+  --header-blue: rgba(13, 27, 42, 0.95);
+  --card-bg: rgba(22, 38, 70, 0.8);
   --accent-gold: #fbbf24;
-  --accent-orange: #f97316;
-  --accent-green: #10b981;
-  --glass-light: rgba(255, 255, 255, 0.1);
-  --glass-dark: rgba(0, 0, 0, 0.1);
 }
 
 html {
-  background: radial-gradient(circle at 50% 50%, #0d1b2a 0%, #000814 100%);
+  background: radial-gradient(circle at 50% 20%, #1e3a8a 0%, #000814 100%);
   background-attachment: fixed;
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: transparent;
-}
-
-/* Container Principal */
-.app-container {
-  width: 100%;
-  min-height: 100vh;
-  background: transparent;
-  padding: 0;
   margin: 0;
-  overflow-x: hidden;
+  padding: 0;
 }
 
-/* ===== HERO SECTION ===== */
+/* =========================================
+   1. HERO SECTION (CABEÇALHO FIXO SEMPRE)
+   ========================================= */
 .hero-section {
-  position: relative;
-  width: 100%;
-  min-height: 450px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 2rem;
-  overflow: hidden;
-  background: linear-gradient(
-    180deg,
-    rgba(13, 31, 60, 0.3) 0%,
-    rgba(13, 31, 60, 0.05) 100%
-  );
-}
-
-.hero-section::before {
-  content: '';
-  position: absolute;
+  position: fixed; /* Fixo desde o início para não pular */
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(251, 191, 36, 0.08) 0%,
-    rgba(249, 115, 22, 0.03) 40%,
-    transparent 100%
-  );
-  z-index: 0;
-  pointer-events: none;
+  height: 400px;
+  background: transparent;
+  z-index: 1000;
+  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease, border 0.5s ease;
 }
 
+/* Estado da barra ao rolar a página */
+.hero-section.sticky-header {
+  height: 80px;
+  background: var(--header-blue);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--accent-gold);
+}
+
+.header-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: row; /* Coloca a logo e o texto lado a lado desde o início */
+  align-items: center;
+  gap: 2rem;
+  width: auto;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Quando scrolla, empurra o bloco todo para a esquerda da barra */
+.sticky-header .header-content {
+  left: 2rem;
+  transform: translate(0, -50%);
+  gap: 1.5rem;
+}
+
+/* --- ANIMAÇÃO DA LOGO --- */
 .hero-image {
-  position: relative;
-  z-index: 1;
-  max-width: 380px;
-  width: 90%;
+  width: 160px; /* Reduzido para ficar harmônico ao lado do texto */
   height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 8px 32px rgba(251, 191, 36, 0.25)) 
-          drop-shadow(0 0 60px rgba(249, 115, 22, 0.15));
-  animation: float 4s ease-in-out infinite;
-  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4));
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.hero-overlay {
-  position: relative;
-  z-index: 2;
+.sticky-header .hero-image {
+  width: 50px; /* Encolhe perfeitamente na barra fixa */
+}
+
+/* --- ANIMAÇÃO DOS TEXTOS --- */
+.header-text {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  animation: fadeIn 1s ease-out 0.3s both;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
+  align-items: flex-start; /* Texto sempre alinhado à esquerda */
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-title {
-  font-size: 4rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 0;
-  text-align: center;
-  letter-spacing: 3px;
+  font-size: 3.5rem;
+  color: white;
   text-transform: uppercase;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  animation: slideDown 0.8s ease-out;
+  margin: 0;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transition: font-size 0.5s ease;
+  white-space: nowrap; /* Impede que o título quebre em duas linhas */
 }
 
 .hero-subtitle {
-  font-size: 1.3rem;
-  color: #a5b4fc;
-  margin-top: 1rem;
-  text-align: center;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  animation: slideUp 0.8s ease-out 0.2s both;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Header Principal (Hidden visually but kept for structure) */
-.app-header {
-  text-align: center;
-  color: white;
-  margin-bottom: 3rem;
-  margin-top: 2rem;
-  animation: fadeIn 1s ease-out 0.4s both;
-}
-
-.app-header h1 {
-  margin: 0 0 0.5rem 0;
-  font-size: 2.5rem;
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.subtitle {
+  font-size: 1.2rem;
+  color: var(--accent-gold);
   margin: 0;
-  font-size: 1.1rem;
-  opacity: 0.8;
   font-weight: 600;
-  color: #a5b4fc;
-  letter-spacing: 0.5px;
+  transition: font-size 0.5s ease;
+  white-space: nowrap;
 }
 
-/* Main Content */
+.sticky-header .hero-title {
+  font-size: 1.5rem;
+}
+
+.sticky-header .hero-subtitle {
+  font-size: 0.85rem;
+}
+
+/* =========================================
+   2. CONTEÚDO PRINCIPAL (CARDS E LISTAS)
+   ========================================= */
 .main-content {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 1rem;
+  /* Como o cabeçalho agora é fixo com 400px, empurramos o conteúdo permanentemente para baixo */
+  padding-top: 420px; 
+  position: relative;
+  z-index: 10;
+}
+
+.main-config-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
-  padding: 0 1rem;
-  animation: fadeIn 1s ease-out 0.6s both;
+  gap: 2rem;
 }
 
-/* Sorteio Section */
-.sorteio-section {
-  width: 100%;
-}
-
-/* Card Premium Glassmorphic */
-.sorteio-card {
-  background: rgba(255, 255, 255, 0.08);
+/* =========================================
+   3. CARD INFERIOR E BOTÕES RESTAURADOS
+   ========================================= */
+.main-config-card {
+  background: var(--card-bg);
   backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 24px;
-  padding: 3rem;
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.3),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
-.sorteio-card:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(251, 191, 36, 0.3);
-  box-shadow:
-    0 16px 50px rgba(251, 191, 36, 0.15),
-    inset 0 1px 1px rgba(255, 255, 255, 0.25);
-  transform: translateY(-4px);
-}
-
-.sorteio-card h2 {
-  margin: 0 0 2rem 0;
-  color: #ffffff;
+.card-header h2 {
+  color: var(--accent-gold);
   font-size: 2rem;
+  margin: 0 0 0.5rem 0;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
-/* Button Group */
+.card-header p {
+  color: #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+/* Container de Botões */
 .button-group {
   display: flex;
   gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
-}
-
-/* Botões Pílula Premium */
-.sorteio-btn,
-.customizar-btn {
-  flex: 1;
-  min-width: 220px;
-  padding: 1.2rem 2rem;
-  border: none;
-  font-size: 1rem;
-  font-weight: 900;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  width: 100%;
 }
 
+/* IDENTIDADE VISUAL DOS BOTÕES (Estilo Card Centralizado) */
+.sorteio-btn, 
+.customizar-btn {
+  flex: 1; /* Faz os botões dividirem o espaço meio a meio */
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Centraliza o conteúdo internamente */
+  text-align: center;
+  gap: 8px;
+  height: auto;
+  padding: 1.5rem 2rem;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  color: #fff;
+}
+
+.btn-title {
+  font-size: 1.3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-desc {
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.9;
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+/* Deixando a caixa de regras mais translúcida e menos "suja" */
+.rules-info {
+  background: rgba(255, 255, 255, 0.05); /* Fundo de vidro em vez de preto */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 16px;
+  border-left: 4px solid var(--accent-gold);
+}
+
+/* Botão Dourado */
 .sorteio-btn {
-  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
-  color: #1a1a1a;
-  box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #000;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
 }
 
-.sorteio-btn:hover:not(:disabled) {
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 12px 32px rgba(251, 191, 36, 0.4);
-}
-
-.sorteio-btn:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-.sorteio-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
+/* Botão Verde */
 .customizar-btn {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: #ffffff;
-  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
-.customizar-btn:hover:not(:disabled) {
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4);
+.sorteio-btn:hover:not(:disabled), 
+.customizar-btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.1);
 }
 
-.customizar-btn:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-/* Rules Info Card */
+/* Regras */
 .rules-info {
-  background: rgba(99, 102, 241, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  padding: 2rem;
-  border-radius: 16px;
-  border-left: 4px solid #fbbf24;
-  animation: slideUp 0.8s ease-out 0.8s both;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 4px solid var(--accent-gold);
 }
 
 .rules-info h3 {
-  margin: 0 0 1.5rem 0;
-  color: #ffffff;
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  color: #fff;
+  margin-top: 0;
 }
 
 .rules-info ul {
-  margin: 0;
-  padding-left: 1.5rem;
-  color: #cbd5e1;
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .rules-info li {
-  margin-bottom: 0.8rem;
-  font-weight: 500;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 0.5rem;
 }
 
-.rules-info li:before {
-  content: "✓ ";
-  color: #fbbf24;
-  font-weight: 900;
-  margin-right: 0.5rem;
-}
-
-/* Customização Section */
+/* =========================================
+   ESTILO DO BOTÃO "VOLTAR" (TELA CUSTOMIZAR)
+   ========================================= */
 .customizacao-section {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem; /* Dá um respiro no final da página */
 }
 
 .voltar-simples-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #cbd5e1;
-  padding: 0.9rem 2rem;
+  padding: 0.8rem 2.5rem;
   border-radius: 50px;
+  font-size: 0.9rem;
   font-weight: 700;
-  cursor: pointer;
-  margin-top: 2rem;
-  transition: all 0.3s ease;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
   text-transform: uppercase;
   letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: -1rem; /* Aproxima ele do card de potes */
 }
 
 .voltar-simples-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(251, 191, 36, 0.3);
-  color: #fbbf24;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
-}
-
-/* Resultado Section */
-.resultado-section {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 1rem;
-}
-
-/* Resultado Actions */
-.resultado-actions {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  margin-top: 3rem;
-  flex-wrap: wrap;
-  animation: fadeIn 1s ease-out;
-}
-
-.voltar-btn,
-.novo-sorteio-btn {
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 50px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.95rem;
-  backdrop-filter: blur(10px);
-}
-
-.voltar-btn {
   background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: #cbd5e1;
-}
-
-.voltar-btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(251, 191, 36, 0.3);
-  color: #fbbf24;
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
   transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-.novo-sorteio-btn {
-  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
-  color: #1a1a1a;
-  border: none;
-  box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
+/* Efeito de destaque para o botão de Customização Total */
+.highlight-feature {
+  position: relative;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
 }
 
-.novo-sorteio-btn:hover:not(:disabled) {
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 12px 32px rgba(251, 191, 36, 0.4);
-}
-
-.novo-sorteio-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Logs Section */
-.logs-section {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  padding: 2rem;
-  margin-top: 3rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
-
-.toggle-logs-btn {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+.badge-promo {
+  position: absolute;
+  top: -12px;
+  right: 15px;
+  background: #10b981;
   color: white;
-  border: none;
-  padding: 0.9rem 1.8rem;
-  border-radius: 50px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 1.5rem;
-  text-transform: uppercase;
+  font-size: 0.6rem;
+  font-weight: 900;
+  padding: 4px 8px;
+  border-radius: 6px;
   letter-spacing: 1px;
-  font-size: 0.9rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 2;
 }
 
-.toggle-logs-btn:hover {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-}
-
-.logs-container {
-  background: rgba(0, 0, 0, 0.5);
-  color: #86efac;
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid rgba(134, 239, 172, 0.2);
-  overflow-x: auto;
-  font-family: 'Courier New', monospace;
-  font-size: 0.85rem;
-  line-height: 1.6;
-  max-height: 400px;
-  overflow-y: auto;
-  backdrop-filter: blur(10px);
-}
-
-.logs-container pre {
-  margin: 0;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-
-  .app-header h1 {
-    font-size: 1.8rem;
-  }
-
-  .sorteio-card {
-    padding: 2rem 1.5rem;
-  }
-
-  .sorteio-card h2 {
-    font-size: 1.5rem;
-  }
-
-  .button-group {
-    flex-direction: column;
-  }
-
-  .sorteio-btn,
-  .customizar-btn {
-    min-width: 100%;
-  }
-
-  .resultado-actions {
-    flex-direction: column;
-  }
-
-  .voltar-btn,
-  .novo-sorteio-btn {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-section {
-    height: 400px;
-  }
-
-  .hero-title {
-    font-size: 1.8rem;
-  }
-
-  .main-content {
-    padding: 0 0.5rem;
-  }
-
-  .sorteio-card {
-    padding: 1.5rem 1rem;
-  }
-
-  .rules-info ul {
-    padding-left: 1rem;
-  }
-
-  .rules-info li {
-    font-size: 0.85rem;
-  }
-}
-
-.resultado-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.voltar-btn,
-.novo-sorteio-btn {
-  padding: 0.9rem 2rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+.selection-count-pill {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.voltar-btn {
-  background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
-}
-
-.voltar-btn:hover {
-  background: #f0f4ff;
-  transform: translateY(-2px);
-}
-
-.novo-sorteio-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-}
-
-.novo-sorteio-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .app-container {
-    padding: 1rem;
-  }
-
-  .app-header h1 {
-    font-size: 2rem;
-  }
-
-  .button-group {
-    flex-direction: column;
-  }
-
-  .sorteio-btn,
-  .customizar-btn {
-    min-width: auto;
-  }
-
-  .sorteio-card {
-    padding: 1.5rem;
-  }
-
-  .resultado-actions {
-    flex-direction: column;
-  }
-
-  .voltar-btn,
-  .novo-sorteio-btn {
-    width: 100%;
-  }
-
-  .logs-container {
-    font-size: 0.75rem;
-  }
+  color: #fbbf24;
 }

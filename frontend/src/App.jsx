@@ -1,201 +1,153 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import TeamList from './TeamList'
 import PotCustomizer from './PotCustomizer'
 import GroupsDisplay from './GroupsDisplay'
 import ResultScreen from './ResultScreen'
-import heroImage from '../img/hero-image.webp'
+import heroImage from '../img/tournaments_fifa-world-cup-2026.football-logos.cc.svg'
 import './App.css'
 
 function App() {
   const [grupos, setGrupos] = useState(null)
   const [loadingSorteio, setLoadingSorteio] = useState(false)
-  const [etapa, setEtapa] = useState('lista') // 'lista', 'customizacao' ou 'resultado'
-  const [viewMode, setViewMode] = useState('sorteio-animado') // 'sorteio-animado' ou 'grupos-completos'
-  const [logs, setLogs] = useState(null)
-  const [mostrarLogs, setMostrarLogs] = useState(false)
+  const [etapa, setEtapa] = useState('lista') 
+  const [viewMode, setViewMode] = useState('sorteio-animado') 
+  const [scrolled, setScrolled] = useState(false)
+
   const API_BASE = import.meta.env.VITE_API_URL || '';
+  const paisSede = "Canadá, México, EUA"
 
-  const paisSede = "Canadá, México, EUA" // Fixo
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10) 
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
-  const handleIniciarSorteio = async () => {
+  // --- NOVA FUNÇÃO: VOLTAR AO INÍCIO ---
+  const handleVoltarInicio = () => {
+    setEtapa('lista');
+    setGrupos(null);
+  };
+
+  // --- CORREÇÃO: AGORA ACEITA OS POTES CUSTOMIZADOS ---
+  const handleIniciarSorteio = async (potesCustomizados = null) => {
     try {
       setLoadingSorteio(true)
-      setViewMode('sorteio-animado') // Começar com o sorteio animado
+      setViewMode('sorteio-animado')
       const response = await axios.post(`${API_BASE}/api/sorteio`, {
         pais_sede: paisSede,
-        potes_customizados: null
+        potes_customizados: potesCustomizados
       })
-      
       if (response.data.success) {
         setGrupos(response.data.grupos)
-        carregarLogs()
         setEtapa('resultado')
       }
     } catch (error) {
-      console.error('Erro ao fazer sorteio:', error)
-      alert('Erro ao realizar o sorteio. Verifique se o backend está rodando.')
+      console.error('Erro:', error)
     } finally {
       setLoadingSorteio(false)
-    }
-  }
-
-  const handleSorteioComCustomizacao = async (potes) => {
-    try {
-      setLoadingSorteio(true)
-      setViewMode('sorteio-animado') // Começar com o sorteio animado
-      const response = await axios.post(`${API_BASE}/api/sorteio`, {
-        pais_sede: paisSede,
-        potes_customizados: potes
-      })
-      
-      if (response.data.success) {
-        setGrupos(response.data.grupos)
-        carregarLogs()
-        setEtapa('resultado')
-      }
-    } catch (error) {
-      console.error('Erro ao fazer sorteio:', error)
-      alert('Erro ao realizar o sorteio. Verifique se o backend está rodando.')
-    } finally {
-      setLoadingSorteio(false)
-    }
-  }
-
-  const carregarLogs = async () => {
-    try {
-      const response = await axios.get(`${API_BASE}/api/logs`)
-      if (response.data.success) {
-        setLogs(response.data.logs)
-      }
-    } catch (error) {
-      console.error('Erro ao carregar logs:', error)
     }
   }
 
   const handleVoltar = () => {
-    setGrupos(null)
     setEtapa('lista')
-  }
-
-  const handleIrParaCustomizacao = () => {
-    setEtapa('customizacao')
+    setGrupos(null)
   }
 
   return (
-    <div className="app-container">
-      {/* Hero Section com Logo */}
-      <section className="hero-section">
-        <img src={heroImage} alt="Logo Copa 2026" className="hero-image" />
-        <div className="hero-overlay">
-          <h1 className="hero-title">FIFA WORLD CUP 2026</h1>
-          <p className="hero-subtitle">Simulador Oficial de Sorteio</p>
+    <div className={`app-container ${scrolled ? 'is-scrolled' : ''}`}>
+      
+      {/* HEADER ISOLADO: Logo e Título Clicáveis */}
+      <header className={`hero-section ${scrolled ? 'sticky-header' : ''}`}>
+        <div 
+          className="header-content" 
+          onClick={handleVoltarInicio} 
+          style={{ cursor: 'pointer' }}
+          title="Voltar para a Tela Inicial"
+        >
+          <img src={heroImage} alt="Logo Copa 2026" className="hero-image" />
+          <div className="header-text">
+            <h1 className="hero-title">Simulador da Copa do Mundo 2026</h1>
+            <p className="hero-subtitle">O simulador definitivo para a primeira Copa com 48 seleções.</p>
+          </div>
         </div>
-      </section>
-
-      <header className="app-header">
-        <h1>⚽ Sorteio Copa do Mundo 2026</h1>
-        <p className="subtitle">Algoritmo da FIFA com restrições geográficas</p>
       </header>
 
-      {etapa === 'lista' ? (
-        <div className="main-content">
-          <TeamList />
-          
-          <div className="sorteio-section">
-            <div className="sorteio-card">
-              <h2>🎲 Iniciar Sorteio</h2>
+      {/* CONTEÚDO PRINCIPAL */}
+      <main className="main-content">
+        {etapa === 'lista' && (
+          <div className="main-config-wrapper">
+            <div className="sorteio-card main-config-card">
+              <div className="card-header">
+                <h2>🎲 Iniciar Sorteio</h2>
+                <p>Configure como deseja gerar os grupos da Copa.</p>
+              </div>
 
               <div className="button-group">
-                <button 
-                  className="sorteio-btn"
-                  onClick={handleIniciarSorteio}
-                  disabled={loadingSorteio}
-                >
-                  {loadingSorteio ? '⏳ Sorteando...' : '🎱 Iniciar Sorteio Padrão'}
+                {/* Aqui passamos null para forçar o sorteio padrão */}
+                <button className="sorteio-btn" onClick={() => handleIniciarSorteio(null)} disabled={loadingSorteio}>
+                  <span className="btn-title">{loadingSorteio ? '⏳ Sorteando...' : '🎱 Sorteio Padrão'}</span>
+                  <span className="btn-desc">Usa as 48 seleções classificadas e ranking atual</span>
                 </button>
 
-                <button 
-                  className="customizar-btn"
-                  onClick={handleIrParaCustomizacao}
-                >
-                  🎯 Personalizar Potes
+                <button className="customizar-btn highlight-feature" onClick={() => setEtapa('customizacao')}>
+                  <div className="badge-promo">LIBERDADE TOTAL</div>
+                  <span className="btn-title">🎯 Customização Global</span>
+                  <span className="btn-desc">Troque seleções, use as 211 nações da FIFA e edite os potes</span>
                 </button>
               </div>
 
               <div className="rules-info">
-                <h3>📋 Regras do Sorteio:</h3>
+                <h3>📋 Regras Automáticas:</h3>
                 <ul>
-                  <li>✓ 12 Grupos de 4 times</li>
-                  <li>✓ Um time de cada pote por grupo</li>
-                  <li>✓ Máximo 1 representante por confederação (exceto UEFA)</li>
-                  <li>✓ UEFA pode ter até 2 representantes por grupo</li>
-                  <li>✓ Países sedes: Canadá (Grupo A), México (Grupo B), EUA (Grupo D)</li>
+                  <li>✓ Países sedes fixos (A1, B1, D1)</li>
+                  <li>✓ Limite de 1 representante por confederação (exceto UEFA)</li>
+                  <li>✓ UEFA: Máximo 2 por grupo</li>
                 </ul>
               </div>
             </div>
+
+            <TeamList />
           </div>
-        </div>
-      ) : etapa === 'customizacao' ? (
-        <div className="customizacao-section">
-          <PotCustomizer 
-            onSorteio={handleSorteioComCustomizacao}
-            paisSede={paisSede}
-          />
-          <button className="voltar-simples-btn" onClick={handleVoltar}>
-            ← Voltar
-          </button>
-        </div>
-      ) : (
-        <div className="resultado-section">
-          {viewMode === 'sorteio-animado' ? (
-            <ResultScreen 
-              grupos={grupos} 
-              paisSede={paisSede}
-              onVoltar={() => setViewMode('grupos-completos')}
+        )}
+
+        {etapa === 'customizacao' && (
+          <div className="customizacao-section">
+            <PotCustomizer 
+              onSorteio={(p) => handleIniciarSorteio(p)} 
+              onVoltar={() => setEtapa('lista')} 
+              paisSede={paisSede} 
             />
-          ) : (
-            <>
-              <GroupsDisplay grupos={grupos} paisSede={paisSede} />
-              
-              <div className="resultado-actions">
-                <button 
-                  className="voltar-btn" 
-                  onClick={() => setViewMode('sorteio-animado')}
-                >
-                  ← Ver Sorteio Animado
-                </button>
-                <button className="voltar-btn" onClick={handleVoltar}>
-                  ← Voltar para Seleção de Times
-                </button>
-                <button 
-                  className="novo-sorteio-btn"
-                  onClick={handleIniciarSorteio}
-                  disabled={loadingSorteio}
-                >
-                  {loadingSorteio ? '⏳ Sorteando...' : '🔄 Fazer Novo Sorteio'}
-                </button>
-              </div>
-            </>
-          )}
-          
-          {logs && viewMode === 'grupos-completos' && (
-            <div className="logs-section">
-              <button 
-                className="toggle-logs-btn"
-                onClick={() => setMostrarLogs(!mostrarLogs)}
-              >
-                {mostrarLogs ? '📋 Ocultar Logs' : '📋 Mostrar Logs'}
-              </button>
-              {mostrarLogs && (
-                <div className="logs-container">
-                  <pre>{logs}</pre>
+          </div>
+        )}
+
+        {etapa === 'resultado' && (
+          <div className="resultado-section">
+            {viewMode === 'sorteio-animado' ? (
+              <ResultScreen 
+                grupos={grupos} 
+                paisSede={paisSede}
+                onVoltar={() => {
+                  setEtapa('customizacao'); 
+                  setGrupos(null); 
+                }} 
+                onVoltarInicio={handleVoltarInicio} 
+              />
+            ) : (
+              <>
+                <GroupsDisplay grupos={grupos} paisSede={paisSede} />
+                <div className="resultado-actions">
+                  <button className="voltar-btn" onClick={() => setViewMode('sorteio-animado')}>← Ver Animação</button>
+                  <button className="voltar-btn" onClick={handleVoltar}>← Nova Seleção</button>
+                  <button className="novo-sorteio-btn" onClick={() => handleIniciarSorteio(null)}>🔄 Sortear Novamente</button>
                 </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+              </>
+            )}
+          </div>
+        )}
+      </main>
     </div>
   )
 }

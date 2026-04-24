@@ -221,7 +221,7 @@ def get_times_disponiveis():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  
     import uvicorn
     # O uvicorn só vai rodar se você executar 'python app.py'
     # Em produção (Vercel), esse bloco será totalmente ignorado.
