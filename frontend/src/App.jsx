@@ -25,20 +25,18 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // --- NOVA FUNÇÃO: VOLTAR AO INÍCIO ---
   const handleVoltarInicio = () => {
     setEtapa('lista');
     setGrupos(null);
   };
 
-  // --- CORREÇÃO: AGORA ACEITA OS POTES CUSTOMIZADOS ---
   const handleIniciarSorteio = async (potesCustomizados = null) => {
     try {
       setLoadingSorteio(true)
       setViewMode('sorteio-animado')
       const response = await axios.post(`${API_BASE}/api/sorteio`, {
         pais_sede: paisSede,
-        potes_customizados: potesCustomizados
+        potes_customizados: potesCustomizados 
       })
       if (response.data.success) {
         setGrupos(response.data.grupos)
@@ -59,10 +57,9 @@ function App() {
   return (
     <div className={`app-container ${scrolled ? 'is-scrolled' : ''}`}>
       
-      {/* HEADER ISOLADO: Logo e Título Clicáveis */}
       <header className={`hero-section ${scrolled ? 'sticky-header' : ''}`}>
         <div 
-          className="header-content" 
+          className="header-content"
           onClick={handleVoltarInicio} 
           style={{ cursor: 'pointer' }}
           title="Voltar para a Tela Inicial"
@@ -75,7 +72,6 @@ function App() {
         </div>
       </header>
 
-      {/* CONTEÚDO PRINCIPAL */}
       <main className="main-content">
         {etapa === 'lista' && (
           <div className="main-config-wrapper">
@@ -86,7 +82,6 @@ function App() {
               </div>
 
               <div className="button-group">
-                {/* Aqui passamos null para forçar o sorteio padrão */}
                 <button className="sorteio-btn" onClick={() => handleIniciarSorteio(null)} disabled={loadingSorteio}>
                   <span className="btn-title">{loadingSorteio ? '⏳ Sorteando...' : '🎱 Sorteio Padrão'}</span>
                   <span className="btn-desc">Usa as 48 seleções classificadas e ranking atual</span>
@@ -130,10 +125,10 @@ function App() {
                 grupos={grupos} 
                 paisSede={paisSede}
                 onVoltar={() => {
-                  setEtapa('customizacao'); 
+                  setEtapa('customizacao');
                   setGrupos(null); 
                 }} 
-                onVoltarInicio={handleVoltarInicio} 
+                onVoltarInicio={handleVoltarInicio}
               />
             ) : (
               <>

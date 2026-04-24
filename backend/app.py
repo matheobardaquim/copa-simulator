@@ -1,6 +1,8 @@
 import os
 import sys
 from pathlib import Path
+from fastapi.responses import StreamingResponse
+from exportador_imagem import gerar_imagem_grupos
 
 # 1. PEGA O CAMINHO ABSOLUTO DA PASTA BACKEND
 current_dir = Path(__file__).parent.resolve()
@@ -220,6 +222,20 @@ def get_times_disponiveis():
         print(f"❌ Erro ao buscar times disponíveis: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/api/exportar")
+async def exportar_sorteio(request: Dict[str, Any]):
+    print("🔔 REQUISIÇÃO RECEBIDA NA ROTA /api/exportar") # <-- Adicione este print
+    grupos = request.get("grupos")
+    if not grupos:
+        raise HTTPException(status_code=400, detail="Dados dos grupos não fornecidos")
+    
+    imagem_stream = gerar_imagem_grupos(grupos)
+    
+    return StreamingResponse(
+        imagem_stream, 
+        media_type="image/png",
+        headers={"Content-Disposition": "attachment; filename=sorteio_copa_2026.png"}
+    )
 
 if __name__ == "__main__":  
     import uvicorn

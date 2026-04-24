@@ -23,90 +23,58 @@ body {
    1. HERO SECTION (CABEÇALHO FIXO SEMPRE)
    ========================================= */
 .hero-section {
-  position: fixed; /* Fixo desde o início para não pular */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 400px;
-  background: transparent;
-  z-index: 1000;
-  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease, border 0.5s ease;
-}
-
-/* Estado da barra ao rolar a página */
-.hero-section.sticky-header {
-  height: 80px;
+  height: 80px; /* ALTURA FIXA E COMPACTA */
   background: var(--header-blue);
+  z-index: 1000;
   backdrop-filter: blur(10px);
   border-bottom: 2px solid var(--accent-gold);
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .header-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
-  flex-direction: row; /* Coloca a logo e o texto lado a lado desde o início */
+  flex-direction: row;
   align-items: center;
-  gap: 2rem;
-  width: auto;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Quando scrolla, empurra o bloco todo para a esquerda da barra */
-.sticky-header .header-content {
-  left: 2rem;
-  transform: translate(0, -50%);
   gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
-/* --- ANIMAÇÃO DA LOGO --- */
 .hero-image {
-  width: 160px; /* Reduzido para ficar harmônico ao lado do texto */
+  width: 50px; /* LOGO FIXA E PEQUENA */
   height: auto;
-  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4));
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4));
 }
 
-.sticky-header .hero-image {
-  width: 50px; /* Encolhe perfeitamente na barra fixa */
-}
-
-/* --- ANIMAÇÃO DOS TEXTOS --- */
 .header-text {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Texto sempre alinhado à esquerda */
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  align-items: flex-start;
 }
 
 .hero-title {
-  font-size: 3.5rem;
+  font-size: 1.5rem; /* TÍTULO FIXO E COMPACTO */
   color: white;
   text-transform: uppercase;
   margin: 0;
-  letter-spacing: 2px;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-  transition: font-size 0.5s ease;
-  white-space: nowrap; /* Impede que o título quebre em duas linhas */
-}
-
-.hero-subtitle {
-  font-size: 1.2rem;
-  color: var(--accent-gold);
-  margin: 0;
-  font-weight: 600;
-  transition: font-size 0.5s ease;
+  letter-spacing: 1px;
   white-space: nowrap;
 }
 
-.sticky-header .hero-title {
-  font-size: 1.5rem;
-}
-
-.sticky-header .hero-subtitle {
-  font-size: 0.85rem;
+.hero-subtitle {
+  font-size: 0.85rem; /* SUBTÍTULO FIXO E COMPACTO */
+  color: var(--accent-gold);
+  margin: 0;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 /* =========================================
@@ -116,8 +84,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
-  /* Como o cabeçalho agora é fixo com 400px, empurramos o conteúdo permanentemente para baixo */
-  padding-top: 420px; 
+  padding-top: 110px; /* Margem exata só para o header de 80px */
   position: relative;
   z-index: 10;
 }
@@ -228,13 +195,6 @@ body {
 }
 
 /* Regras */
-.rules-info {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 1.5rem;
-  border-radius: 12px;
-  border-left: 4px solid var(--accent-gold);
-}
-
 .rules-info h3 {
   color: #fff;
   margin-top: 0;
@@ -314,4 +274,46 @@ body {
   font-size: 0.8rem;
   font-weight: 600;
   color: #fbbf24;
+}
+
+/* ===== RESULTADO FINAL (SEÇÃO 1) ===== */
+.result-header-final {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  animation: slideDown 0.6s ease-out;
+}
+
+.result-header-final h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle-final {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #a5b4fc;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
