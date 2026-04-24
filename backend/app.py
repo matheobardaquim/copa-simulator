@@ -1,8 +1,6 @@
 import os
 import sys
 from pathlib import Path
-from fastapi.responses import StreamingResponse
-from exportador_imagem import gerar_imagem_grupos
 
 # 1. PEGA O CAMINHO ABSOLUTO DA PASTA BACKEND
 current_dir = Path(__file__).parent.resolve()
@@ -11,8 +9,8 @@ current_dir = Path(__file__).parent.resolve()
 if str(current_dir) not in sys.path:
     sys.path.insert(0, str(current_dir))
 
-import sys
-import os
+from fastapi.responses import StreamingResponse
+from exportador_imagem import gerar_imagem_grupos
 import json
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
