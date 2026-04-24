@@ -1,202 +1,543 @@
+/* ===== APP - ESTÉTICA COPA DO MUNDO 2026 PREMIUM ===== */
+
+:root {
+  --primary-dark: #0d1f3c;
+  --primary-blue: #1a3a52;
+  --accent-gold: #fbbf24;
+  --accent-orange: #f97316;
+  --accent-green: #10b981;
+  --glass-light: rgba(255, 255, 255, 0.1);
+  --glass-dark: rgba(0, 0, 0, 0.1);
+}
+
+html {
+  background: radial-gradient(circle at 50% 50%, #0d1b2a 0%, #000814 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+body {
+  background: transparent;
+}
+
+/* Container Principal */
 .app-container {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem 1rem;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
 }
 
+/* ===== HERO SECTION ===== */
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    rgba(13, 31, 60, 0.3) 0%,
+    rgba(13, 31, 60, 0.05) 100%
+  );
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(251, 191, 36, 0.08) 0%,
+    rgba(249, 115, 22, 0.03) 40%,
+    transparent 100%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-image {
+  position: relative;
+  z-index: 1;
+  max-width: 380px;
+  width: 90%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 32px rgba(251, 191, 36, 0.25)) 
+          drop-shadow(0 0 60px rgba(249, 115, 22, 0.15));
+  animation: float 4s ease-in-out infinite;
+  margin-bottom: 2rem;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  animation: fadeIn 1s ease-out 0.3s both;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  text-align: center;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: slideDown 0.8s ease-out;
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+  color: #a5b4fc;
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  animation: slideUp 0.8s ease-out 0.2s both;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header Principal (Hidden visually but kept for structure) */
 .app-header {
   text-align: center;
   color: white;
   margin-bottom: 3rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin-top: 2rem;
+  animation: fadeIn 1s ease-out 0.4s both;
 }
 
 .app-header h1 {
   margin: 0 0 0.5rem 0;
-  font-size: 3rem;
-  font-weight: 800;
-  letter-spacing: 1px;
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .subtitle {
   margin: 0;
-  font-size: 1.2rem;
-  opacity: 0.95;
-  font-weight: 300;
+  font-size: 1.1rem;
+  opacity: 0.8;
+  font-weight: 600;
+  color: #a5b4fc;
+  letter-spacing: 0.5px;
 }
 
+/* Main Content */
 .main-content {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 3rem;
+  padding: 0 1rem;
+  animation: fadeIn 1s ease-out 0.6s both;
 }
 
+/* Sorteio Section */
 .sorteio-section {
   width: 100%;
 }
 
+/* Card Premium Glassmorphic */
 .sorteio-card {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.sorteio-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(251, 191, 36, 0.3);
+  box-shadow:
+    0 16px 50px rgba(251, 191, 36, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  transform: translateY(-4px);
 }
 
 .sorteio-card h2 {
-  margin: 0 0 1.5rem 0;
-  color: #333;
-  font-size: 1.8rem;
+  margin: 0 0 2rem 0;
+  color: #ffffff;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+/* Button Group */
 .button-group {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
   flex-wrap: wrap;
 }
 
+/* Botões Pílula Premium */
 .sorteio-btn,
 .customizar-btn {
   flex: 1;
-  min-width: 200px;
-  padding: 1rem;
+  min-width: 220px;
+  padding: 1.2rem 2rem;
   border: none;
-  font-size: 1.1rem;
-  font-weight: 700;
-  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 900;
+  border-radius: 50px;
   cursor: pointer;
-  transition: all 0.3s;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .sorteio-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  color: #1a1a1a;
+  box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
 }
 
 .sorteio-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 12px 32px rgba(251, 191, 36, 0.4);
 }
 
 .sorteio-btn:active:not(:disabled) {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 .sorteio-btn:disabled {
-  opacity: 0.7;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
 .customizar-btn {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: white;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
 }
 
-.customizar-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(245, 87, 108, 0.3);
+.customizar-btn:hover:not(:disabled) {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4);
 }
 
+.customizar-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Rules Info Card */
 .rules-info {
-  background: #f0f4ff;
-  padding: 1.5rem;
-  border-radius: 8px;
-  border-left: 5px solid #667eea;
+  background: rgba(99, 102, 241, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  padding: 2rem;
+  border-radius: 16px;
+  border-left: 4px solid #fbbf24;
+  animation: slideUp 0.8s ease-out 0.8s both;
 }
 
 .rules-info h3 {
-  margin: 0 0 1rem 0;
-  color: #333;
-  font-size: 1.1rem;
+  margin: 0 0 1.5rem 0;
+  color: #ffffff;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .rules-info ul {
   margin: 0;
   padding-left: 1.5rem;
-  color: #666;
+  color: #cbd5e1;
+  list-style: none;
 }
 
 .rules-info li {
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.8rem;
   font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
+.rules-info li:before {
+  content: "✓ ";
+  color: #fbbf24;
+  font-weight: 900;
+  margin-right: 0.5rem;
+}
+
+/* Customização Section */
 .customizacao-section {
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .voltar-simples-btn {
-  background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  color: #cbd5e1;
+  padding: 0.9rem 2rem;
+  border-radius: 50px;
+  font-weight: 700;
   cursor: pointer;
   margin-top: 2rem;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
   display: block;
   margin-left: auto;
   margin-right: auto;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .voltar-simples-btn:hover {
-  background: #f0f4ff;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(251, 191, 36, 0.3);
+  color: #fbbf24;
   transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
 }
 
+/* Resultado Section */
 .resultado-section {
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
-.logs-section {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  margin-top: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* Resultado Actions */
+.resultado-actions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+  animation: fadeIn 1s ease-out;
 }
 
-.toggle-logs-btn {
-  background: #667eea;
-  color: white;
+.voltar-btn,
+.novo-sorteio-btn {
+  padding: 1rem 2rem;
   border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 50px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s;
-  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.95rem;
+  backdrop-filter: blur(10px);
 }
 
-.toggle-logs-btn:hover {
-  background: #764ba2;
+.voltar-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: #cbd5e1;
+}
+
+.voltar-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(251, 191, 36, 0.3);
+  color: #fbbf24;
   transform: translateY(-2px);
 }
 
+.novo-sorteio-btn {
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  color: #1a1a1a;
+  border: none;
+  box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
+}
+
+.novo-sorteio-btn:hover:not(:disabled) {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 12px 32px rgba(251, 191, 36, 0.4);
+}
+
+.novo-sorteio-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Logs Section */
+.logs-section {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 3rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-logs-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 0.9rem 1.8rem;
+  border-radius: 50px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+}
+
+.toggle-logs-btn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
 .logs-container {
-  background: #1e1e1e;
-  color: #00ff00;
+  background: rgba(0, 0, 0, 0.5);
+  color: #86efac;
   padding: 1.5rem;
-  border-radius: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(134, 239, 172, 0.2);
   overflow-x: auto;
   font-family: 'Courier New', monospace;
   font-size: 0.85rem;
   line-height: 1.6;
   max-height: 400px;
   overflow-y: auto;
+  backdrop-filter: blur(10px);
 }
 
 .logs-container pre {
   margin: 0;
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .sorteio-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .sorteio-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .sorteio-btn,
+  .customizar-btn {
+    min-width: 100%;
+  }
+
+  .resultado-actions {
+    flex-direction: column;
+  }
+
+  .voltar-btn,
+  .novo-sorteio-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    height: 400px;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .main-content {
+    padding: 0 0.5rem;
+  }
+
+  .sorteio-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .rules-info ul {
+    padding-left: 1rem;
+  }
+
+  .rules-info li {
+    font-size: 0.85rem;
+  }
 }
 
 .resultado-actions {

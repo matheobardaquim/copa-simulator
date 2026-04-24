@@ -1,28 +1,42 @@
+/* ===== GROUPS DISPLAY - GLASSMORPHISM COPA 2026 ===== */
+
 .groups-display-container {
   width: 100%;
   padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
 }
 
 .groups-header {
   text-align: center;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 3px solid #667eea;
+  border-bottom: 2px solid rgba(251, 191, 36, 0.2);
 }
 
 .groups-header h2 {
   margin: 0 0 0.5rem 0;
-  color: #333;
+  color: #ffffff;
   font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .pais-sede {
   margin: 0;
-  color: #666;
-  font-size: 1.1rem;
+  color: #a5b4fc;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .groups-grid {
@@ -33,30 +47,35 @@
 }
 
 .group-card {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
 }
 
 .group-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(251, 191, 36, 0.3);
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
+  box-shadow: 0 12px 32px rgba(251, 191, 36, 0.15);
 }
 
 .group-title {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 1rem;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  color: #1a1a1a;
+  padding: 1.2rem;
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: 900;
   text-align: center;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 .teams-list {
-  padding: 1rem;
+  padding: 1.2rem;
 }
 
 .team-item {
@@ -64,11 +83,12 @@
   grid-template-columns: 30px 24px 1fr 60px;
   gap: 0.8rem;
   align-items: center;
-  padding: 0.8rem;
-  background: white;
-  border-radius: 6px;
+  padding: 0.9rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
   margin-bottom: 0.8rem;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .team-item:last-child {
@@ -76,17 +96,19 @@
 }
 
 .team-item:hover {
-  background: #f0f4ff;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+  background: rgba(251, 191, 36, 0.1);
+  border-color: rgba(251, 191, 36, 0.3);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.15);
   transform: translateX(4px);
 }
 
 .team-item.team-iraq {
-  background: linear-gradient(135deg, #00cc44 0%, #00aa33 100%) !important;
+  background: linear-gradient(135deg, rgba(0, 204, 68, 0.2) 0%, rgba(0, 170, 51, 0.15) 100%) !important;
+  border-color: rgba(0, 204, 68, 0.3) !important;
 }
 
 .team-item.team-iraq .team-name {
-  color: white !important;
+  color: #86efac !important;
   font-weight: 700;
 }
 
@@ -96,15 +118,15 @@
   justify-content: center;
   width: 30px;
   height: 30px;
-  background: #667eea;
-  color: white;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  color: #1a1a1a;
   border-radius: 50%;
-  font-weight: 700;
-  font-size: 0.9rem;
+  font-weight: 900;
+  font-size: 0.8rem;
 }
 
 .team-name {
-  color: #333;
+  color: #ffffff;
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -113,36 +135,48 @@
 
 .confederacao-badge {
   padding: 0.35rem 0.6rem;
-  border-radius: 4px;
-  color: white;
-  font-size: 0.75rem;
-  font-weight: 700;
+  border-radius: 6px;
+  color: #1a1a1a;
+  font-size: 0.7rem;
+  font-weight: 900;
   text-align: center;
   cursor: help;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
 }
 
-/* --- TAG DE PLAY-OFF EM GROUPSDISPLAY --- */
+/* Play-off Tag */
 .playoff-tag-groups {
   font-size: 0.65rem;
   font-weight: 700;
-  color: #94a3b8;
+  color: #fbbf24;
   margin-left: 6px;
   letter-spacing: 0.3px;
-  opacity: 0.8;
+  opacity: 0.9;
   display: inline-block;
+  text-transform: uppercase;
 }
 
+/* Legend */
 .legend {
-  background: #f8f9fa;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 1.5rem;
-  border-radius: 10px;
-  border-top: 2px solid #667eea;
+  border-radius: 16px;
+  border-top: 2px solid rgba(251, 191, 36, 0.2);
 }
 
 .legend h3 {
   margin: 0 0 1rem 0;
-  color: #333;
+  color: #ffffff;
   font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
 }
 
 .legend-items {
@@ -155,18 +189,22 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .legend-color {
   width: 20px;
   height: 20px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .legend-item span:last-child {
-  color: #666;
-  font-size: 0.95rem;
+  color: #cbd5e1;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
@@ -182,5 +220,9 @@
 
   .legend-items {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .groups-display-container {
+    padding: 1.5rem 1rem;
   }
 }

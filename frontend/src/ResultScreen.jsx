@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { ChevronRight, SkipForward, RotateCcw } from 'lucide-react'
 import CountryFlag from './CountryFlag'
+import HeaderSorteio from './HeaderSorteio'
 import './ResultScreen.css'
 
 /**
@@ -198,6 +199,8 @@ function ResultScreen({ grupos, paisSede, onVoltar }) {
 
   return (
     <div className="result-screen-container">
+      <HeaderSorteio paisSede={paisSede} />
+      
       <div className="result-header">
         <h1>⚽ Sorteio em Andamento</h1>
         <p className="pais-sede">Países Sede: <strong>{paisSede}</strong></p>

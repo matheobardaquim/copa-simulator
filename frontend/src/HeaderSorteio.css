@@ -1,0 +1,163 @@
+/* ===== HEADER SORTEIO - ESTÉTICA PREMIUM COPA 2026 ===== */
+
+.header-sorteio {
+  position: relative;
+  background: linear-gradient(135deg, #0d1f3c 0%, #1a3a52 50%, #0d1f3c 100%);
+  padding: 3rem 2rem;
+  margin-bottom: 2rem;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Background decorativo com marca d'água */
+.header-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Conteúdo do Header */
+.header-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Container da Logo Copa */
+.logo-container {
+  flex: 1;
+  text-align: center;
+}
+
+.logo-copa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.copa-text {
+  font-size: 4rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+}
+
+.copa-trophy {
+  font-size: 3.5rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.header-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0.5rem 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.header-subtitle {
+  font-size: 1.1rem;
+  color: #a5b4fc;
+  margin: 0.25rem 0;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.header-pais {
+  font-size: 1rem;
+  color: #cbd5e1;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.header-pais strong {
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+/* Apoio Técnico - Direita */
+.apoio-tecnico {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.apoio-label {
+  font-size: 0.75rem;
+  color: #a5b4fc;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.apoio-nome {
+  font-size: 1.3rem;
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .header-sorteio {
+    padding: 2rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .copa-text {
+    font-size: 3rem;
+  }
+
+  .copa-trophy {
+    font-size: 2.5rem;
+  }
+
+  .header-title {
+    font-size: 1.8rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .apoio-tecnico {
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+}

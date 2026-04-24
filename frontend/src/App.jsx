@@ -4,6 +4,7 @@ import TeamList from './TeamList'
 import PotCustomizer from './PotCustomizer'
 import GroupsDisplay from './GroupsDisplay'
 import ResultScreen from './ResultScreen'
+import heroImage from '../img/hero-image.webp'
 import './App.css'
 
 function App() {
@@ -83,6 +84,15 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Hero Section com Logo */}
+      <section className="hero-section">
+        <img src={heroImage} alt="Logo Copa 2026" className="hero-image" />
+        <div className="hero-overlay">
+          <h1 className="hero-title">FIFA WORLD CUP 2026</h1>
+          <p className="hero-subtitle">Simulador Oficial de Sorteio</p>
+        </div>
+      </section>
+
       <header className="app-header">
         <h1>⚽ Sorteio Copa do Mundo 2026</h1>
         <p className="subtitle">Algoritmo da FIFA com restrições geográficas</p>

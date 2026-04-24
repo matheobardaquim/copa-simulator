@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Edit3, Lock } from 'lucide-react'
 import TeamDraftSelector from './TeamDraftSelector'
 import CountryFlag from './CountryFlag'
+import HeaderSorteio from './HeaderSorteio'
 import './PotCustomizer.css'
 
 function PotCustomizer({ onSorteio, paisSede }) {
@@ -134,6 +135,8 @@ function PotCustomizer({ onSorteio, paisSede }) {
 
   return (
     <div className="pot-customizer-container">
+      <HeaderSorteio paisSede={paisSede} />
+      
       <div className="customizer-header">
         <h2>🎯 Personalizar Potes</h2>
         <p>Arraste os times. Cada pote <strong>deve ter exatamente 12 seleções</strong>.</p>
