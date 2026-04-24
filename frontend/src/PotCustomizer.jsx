@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Edit3, X, Lock } from 'lucide-react'
+import { Edit3, Lock } from 'lucide-react'
 import TeamDraftSelector from './TeamDraftSelector'
 import CountryFlag from './CountryFlag'
 import './PotCustomizer.css'
@@ -122,13 +122,6 @@ function PotCustomizer({ onSorteio, paisSede }) {
     setDraftAberto(false)
   }
 
-  const removerTimePote = (pote, timeId) => {
-    setPotes({
-      ...potes,
-      [pote]: potes[pote].filter(t => t.id !== timeId)
-    })
-  }
-
   const handleIniciarSorteio = async () => {
     if (!isTudoValido()) return;
     try {
@@ -196,15 +189,16 @@ function PotCustomizer({ onSorteio, paisSede }) {
                     >
                       <div className="team-info-section">
                         <CountryFlag sigla={time.sigla} nome={time.nome} tamanho="pequeno" />
-                        <div className="flex flex-col"> {/* Container para empilhar se necessário */}
+                        <div className="team-name-wrapper">
                           <span className="team-name">
-                            {time.nome}
-                            {getPlayoffLabel(numPote, index) && (
-                              <span className="playoff-tag-minimal">
-                                {getPlayoffLabel(numPote, index)}
-                              </span>
-                            )}
+                            {/* Se o nome for longo e houver sigla, usa a sigla. Senão, usa o nome. */}
+                            {time.nome.length > 13 && time.sigla ? time.sigla : time.nome}
                           </span>
+                          {getPlayoffLabel(numPote, index) && (
+                            <span className="playoff-label-sub">
+                              {getPlayoffLabel(numPote, index)}
+                            </span>
+                          )}
                         </div>
                       </div>
                       <span className="confederacao-tag">{time.confederacao}</span>
@@ -214,22 +208,13 @@ function PotCustomizer({ onSorteio, paisSede }) {
                             <Lock size={16} />
                           </div>
                         ) : (
-                          <>
-                            <button
-                              className="draft-btn"
-                              onClick={() => abrirDraftParaTrocar(parseInt(numPote), time, index)}
-                              title="Substituir este time por outro"
-                            >
-                              <Edit3 size={16} />
-                            </button>
-                            <button
-                              className="remove-btn"
-                              onClick={() => removerTimePote(parseInt(numPote), time.id)}
-                              title="Remover este time do pote"
-                            >
-                              <X size={16} />
-                            </button>
-                          </>
+                          <button
+                            className="draft-btn"
+                            onClick={() => abrirDraftParaTrocar(parseInt(numPote), time, index)}
+                            title="Substituir este time por outro"
+                          >
+                            <Edit3 size={16} />
+                          </button>
                         )}
                       </div>
                     </div>

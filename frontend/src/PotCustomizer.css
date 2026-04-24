@@ -167,23 +167,41 @@
   flex-shrink: 0;
 }
 
-/* --- TAG MINIMALISTA DE PLAY-OFF --- */
-.playoff-tag-minimal {
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #94a3b8;
-  margin-left: 6px;
-  letter-spacing: 0.3px;
-  opacity: 0.8;
-  display: inline-block;
-}
-
 .team-info-section {
   display: flex;
   align-items: center;
   gap: 12px;
   flex: 1;
   min-width: 0;
+}
+
+/* Novo wrapper para alinhar nome em cima e PO embaixo */
+.team-name-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1; /* Diminui o espaço entre as linhas */
+}
+
+.team-name {
+  font-weight: 700;
+  color: #2d3748;
+  font-size: 0.95rem;
+  /* Garante que o texto não quebre linha se o fallback falhar */
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+/* Estilo do Play-off pequeno embaixo */
+.playoff-label-sub {
+  font-size: 0.65rem; /* Bem pequeno */
+  font-weight: 800;
+  color: #6366f1; /* Roxo/Azul para destaque discreto */
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-top: 1px;
 }
 
 .team-name { 
@@ -236,19 +254,7 @@
   transform: scale(1.1);
 }
 
-.remove-btn {
-  background: #fff5f5;
-  color: #e53e3e;
-}
-
-.remove-btn:hover {
-  background: #e53e3e;
-  color: white;
-  transform: scale(1.1);
-}
-
-.draft-btn:active,
-.remove-btn:active {
+.draft-btn:active {
   transform: scale(0.95);
 }
 
