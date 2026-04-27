@@ -155,8 +155,13 @@ def realizar_sorteio(request: SorteioRequest):
                 # Extrai IDs independente se vem como objeto ou int
                 ids_alvo = [int(t["id"]) if isinstance(t, dict) else int(t) for t in times_recebidos]
                 
-                # Busca na base unificada
-                times_validados = [t for t in base_completa if t["id"] in ids_alvo]
+                # 🟢 A MÁGICA AQUI: Encontra o time e carimba o NOVO POTE nele!
+                times_validados = []
+                for t in base_completa:
+                    if t["id"] in ids_alvo:
+                        time_corrigido = dict(t) # Faz uma cópia para não alterar a base original
+                        time_corrigido["pote"] = int(num_pote) # 🎯 FORÇA O PASSAPORTE NOVO!
+                        times_validados.append(time_corrigido)
                 
                 # --- LOG DE AUDITORIA ---
                 print(f"📊 Pote {num_pote}: Recebidos {len(ids_alvo)} IDs -> Recuperados {len(times_validados)} Objetos")
@@ -175,7 +180,7 @@ def realizar_sorteio(request: SorteioRequest):
     except Exception as e:
         print(f"❌ Erro no Sorteio: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
-        
+                
 @app.get("/api/logs")
 def get_logs():
     """Retorna uma mensagem sobre os logs em ambiente serverless"""

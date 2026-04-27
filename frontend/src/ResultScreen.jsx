@@ -175,7 +175,7 @@ function ResultScreenBase({ grupos, onVoltar, onVoltarInicio }) {
                     return (
                       <div key={time.id} className={`pote-team-item ${isSorted ? 'sorted' : ''} ${isCurrent ? 'current' : ''}`}>
                         <div className="pote-team-flag">
-                          <CountryFlag sigla={time?.sigla || 'FIFA'} tamanho="minusculo" />
+                          <CountryFlag sigla={time?.sigla || 'FIFA'} tamanho="grande" />
                         </div>
                         <span className="pote-team-sigla">{time?.sigla || '???'}</span>
                       </div>
