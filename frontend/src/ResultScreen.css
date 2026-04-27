@@ -1,6 +1,4 @@
-/* ===== RESULT SCREEN - ARQUITETURA "PALCO E ARQUIBANCADA" ===== */
-/* Copa do Mundo 2026 | Glasmorphism Premium */
-
+/* ===== RESULT SCREEN - DASHBOARD ONE PAGE ===== */
 :root {
   --primary-dark: #0d1f3c;
   --primary-blue: #1a3a52;
@@ -8,715 +6,404 @@
   --accent-orange: #f97316;
 }
 
-/* ===== CONTAINER PRINCIPAL ===== */
+/* O Segredo do One Page: Painel Fixo, não herda paddings do App.css */
 .result-screen-container {
+  position: fixed;
+  top: 55px; /* 🟢 Altura milimétrica do novo header */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(100vh - 55px);
+  width: 100vw;
+  z-index: 500;
   background: radial-gradient(circle at 50% 0%, #1e3a8a 0%, #000814 60%);
-  background-attachment: fixed;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  padding-bottom: 2rem;
+  overflow: hidden;
+  padding: 0.5rem 1rem 1rem 1rem;
+  box-sizing: border-box;
+  gap: 0.5rem;
+  border-radius: 0;
 }
 
-/* ===== O PALCO (STICKY NO TOPO) ===== */
+/* ===== ALERTA DE PULO (OVERLAY) ===== */
+.skipped-group-alert {
+  position: fixed;
+  top: 55px; /* 🟢 Ajustado com o novo header */
+  left: 20%; right: 20%;
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.95) 0%, rgba(185, 28, 28, 0.95) 100%);
+  color: #fef2f2;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.5);
+  z-index: 1000;
+  animation: alertSlideIn 0.4s ease-out;
+}
+
+@keyframes alertSlideIn {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* ===== O PALCO (HORIZONTAL ESTÁTICO) ===== */
 .palco-section {
-  position: sticky;
-  top: 60px;
-  z-index: 100;
+  flex: 0 0 auto; 
+  height: 70px;
   background: linear-gradient(135deg, rgba(13, 31, 60, 0.95) 0%, rgba(26, 58, 82, 0.95) 100%);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(251, 191, 36, 0.2);
-  border-radius: 0 0 16px 16px;
-  padding: 0.8rem 1.5rem; /* Menos padding */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  margin-bottom: 1rem;
-  animation: palcoSlideDown 0.6s ease-out;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 12px;
+  padding: 0 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-@keyframes palcoSlideDown {
-  from { opacity: 0; transform: translateY(-30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.palco-content {
-  display: flex;
-  justify-content: space-between;
+  flex-direction: row;
   align-items: center;
-  gap: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
+  justify-content: space-between;
+  gap: 1rem;
+  box-sizing: border-box;
+}
+
+/* BLOCO ESQUERDO: Time Sorteado */
+.palco-bloco-esquerdo {
+  flex: 0 0 200px;
+  display: flex;
+  align-items: center;
 }
 
 .palco-flag-container {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  flex: 1;
+  gap: 0.8rem;
 }
 
-/* Bandeira do Time Atual - MENOR */
 .palco-flag-container img {
-  width: 65px; /* De 90px para 65px */
-  height: 65px; 
-  border-radius: 8px;
-  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4));
-  border: 2px solid rgba(251, 191, 36, 0.4);
+  width: 45px;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
 }
 
 .palco-bandeira-info {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
 }
 
 .palco-team-name {
   margin: 0;
-  font-size: 1.3rem; /* Menor */
+  font-size: 1.1rem;
   font-weight: 900;
   color: #ffffff;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  white-space: nowrap;
 }
 
 .palco-destino {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   color: #fbbf24;
   font-weight: 700;
   text-transform: uppercase;
 }
 
-/* Controles do Palco */
-.palco-controls {
-  display: flex;
-  gap: 0.6rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.btn-palco {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(251, 191, 36, 0.3);
-  color: #fbbf24;
-  width: 38px; /* Botões menores */
-  height: 38px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-palco svg {
-  width: 16px;
-  height: 16px;
-}
-/* Badges de Estatísticas no Palco */
-.palco-badges {
-  display: flex;
-  gap: 0.8rem;
-  margin-top: 0.8rem;
-  flex-wrap: wrap;
-}
-
-.badge-estatistica {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #fbbf24;
-  background: rgba(251, 191, 36, 0.15);
-  border: 1px solid rgba(251, 191, 36, 0.3);
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-/* Barra de Progresso */
-.progress-bar-palco {
-  width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 1.5rem 0 0.5rem 0;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.progress-fill-palco {
-  height: 100%;
-  background: linear-gradient(90deg, #fbbf24 0%, #f97316 100%);
-  transition: width 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
-}
-
-.progress-text-palco {
-  margin: 0.5rem 0 0 0;
-  text-align: center;
-  color: #cbd5e1;
-  font-weight: 700;
+.palco-empty-state {
+  color: rgba(255,255,255,0.4);
   font-size: 0.9rem;
-  letter-spacing: 0.5px;
+  font-style: italic;
 }
 
-/* ===== A ARQUIBANCADA (SCROLLABLE) ===== */
-.arquibancada-section {
-  flex: 1;
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.arquibancada-subtitle {
-  text-align: center;
-  color: #a5b4fc;
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 2rem 0;
-  letter-spacing: 0.5px;
-  animation: fadeIn 0.8s ease-out;
-}
-
-.sorteio-completo-view {
-  padding: 3rem 2rem;
-}
-
-.resultado-final-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  animation: slideDown 0.6s ease-out;
-}
-
-.resultado-final-header h1 {
-  margin: 0 0 1rem 0;
-  font-size: 3rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.resultado-final-header p {
-  margin: 0;
-  color: #a5b4fc;
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* ===== GRID DOS 12 GRUPOS ===== */
-.grupos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Cards podem ficar mais finos */
-  gap: 1rem; /* Menos buraco entre os grupos */
-  margin-bottom: 2rem;
-}
-
-.grupo-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  padding: 1rem; /* Menos gordura interna */
-  transition: all 0.4s ease-in-out;
-  scroll-margin-top: 250px; /* Ajustado pro header novo */
-}
-
-.grupo-titulo {
-  font-size: 1.1rem; /* Menor */
-  font-weight: 900;
-  color: #fbbf24;
-  text-align: center;
-  margin-bottom: 0.8rem;
-  letter-spacing: 1px;
-}
-
-.grupo-times {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem; /* Os times ficam mais juntinhos */
-}
-
-/* ===== SLOTS DOS TIMES ===== */
-.time-slot, .time-slot.placeholder {
-  border-radius: 8px;
-  padding: 0.5rem; /* Slot mais fino */
-  min-height: 45px; /* Menor altura */
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.6rem;
-}
-
-.time-content {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  width: 100%;
-}
-
-.time-numero {
-  min-width: 24px;
-  height: 24px;
-  font-size: 0.8rem;
-}
-
-.time-content img {
-  width: 26px; /* Bandeirinha do slot menor */
-  height: 18px;
-  border-radius: 3px;
-}
-
-.time-nome {
-  font-size: 0.85rem; /* Fonte menor para caber nomes longos */
-}
-
-.placeholder-text {
-  font-size: 0.9rem;
-}
-
-.time-content {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  width: 100%;
-}
-
-.time-numero {
-  min-width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
-  color: #1a1a1a;
-  border-radius: 50%;
-  font-weight: 900;
-  font-size: 0.85rem;
-}
-
-.time-content img {
-  width: 32px;
-  height: 24px;
-  border-radius: 4px;
-}
-
-.time-info {
+/* BLOCO CENTRO: Banner de Times do Pote */
+.palco-bloco-centro {
   flex: 1;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.time-nome {
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.playoff-badge {
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #fbbf24;
-  background: rgba(251, 191, 36, 0.15);
-  padding: 2px 6px;
-  border-radius: 4px;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.time-vazio {
-  width: 100%;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.2);
-  font-size: 1.5rem;
-}
-
-.time-aguardando {
-  font-size: 0.85rem;
-  color: rgba(251, 191, 36, 0.5);
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-
-/* ===== SLOT PLACEHOLDER (POT X) ===== */
-.time-slot.placeholder {
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%);
-  border: 2px dashed rgba(251, 191, 36, 0.3);
-  min-height: 60px;
-  display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.slot-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: visible; 
   width: 100%;
-  height: 100%;
-}
-
-.slot-placeholder.empty {
-  opacity: 0.6;
-}
-
-.placeholder-text {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: rgba(251, 191, 36, 0.6);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  font-family: 'Courier New', monospace;
-}
-
-/* ===== BANNER DE POTES (DENTRO DO PALCO - SEM SPOILERS) ===== */
-.pote-banner-inline {
-  width: 100%;
-  margin-bottom: 0.3rem;
-  padding-bottom: 0.3rem;
-  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
-}
-
-.pote-banner-title {
-  margin: 0 0 0.4rem 0;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #fbbf24;
-  letter-spacing: 1px;
-  text-transform: uppercase;
 }
 
 .pote-teams-scroll {
   display: flex;
-  gap: 0.5rem;
-  justify-content: center; /* Centraliza os 12 cards */
-  flex-wrap: wrap; /* Se a tela for pequena, ele quebra a linha e remove o scroll */
-  padding: 0.2rem 0;
+  gap: 0.5rem; /* Um pouco mais de espaço entre os cards */
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0; 
 }
 
-/* Oculta a barra de rolagem já que não usaremos mais */
-.pote-teams-scroll::-webkit-scrollbar { display: none; }
-
-/* Card de Time no Banner - MENOR E ENCAIXADO */
+/* O card inteiro agora foca na bandeira */
 .pote-team-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
-  width: 72px; /* Bem mais fino para caber 12 na tela */
-  height: 72px; /* Mais quadradinho */
-  padding: 0;
-  flex-shrink: 0;
+  justify-content: flex-start; /* Alinha do topo para baixo */
+  width: 60px; /* Largura base */
+  height: 50px; /* Altura total do card, garantindo espaço para a sigla */
   transition: all 0.3s ease;
-  overflow: hidden; /* Garante que a bandeira não vaze nas bordas arredondadas */
+  text-align: center;
+  margin: 0 auto;
 }
 
 .pote-team-item.sorted {
-  opacity: 0.3;
-  filter: grayscale(0.8);
+  opacity: 0.25;
+  filter: grayscale(1);
 }
 
 .pote-team-item.current {
-  border: 2px solid #fbbf24;
-  box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
-  transform: translateY(-2px);
+  transform: scale(1.2); /* Zoom um pouco maior */
+  z-index: 10;
 }
 
-/* Bandeira no Card - PREENCHIMENTO TOTAL */
+/* O container da bandeira - Ocupa o máximo de espaço possível */
 .pote-team-flag {
-  width: 100%;
-  height: 48px; /* Ocupa 2/3 do card perfeitamente */
-  border-radius: 0;
-  border: none;
+  width: 100%; 
+  height: 38px; /* A bandeira dita a maior parte da altura */
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 0; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000; 
+  padding: 0; /* GARANTIA DE ZERO PADDING */
 }
 
+/* Efeito de brilho quando selecionado */
+.pote-team-item.current .pote-team-flag {
+  border: 2px solid #fbbf24; 
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.8); /* Brilho mais intenso */
+}
+
+/* A imagem da bandeira em si */
 .pote-team-flag img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Faz a bandeira esticar lindamente e preencher 100% da caixa */
+  object-fit: cover; /* Estica a imagem para cobrir as bordas do container */
+  object-position: center; /* Centraliza a parte mais importante da bandeira */
   display: block;
+  margin: 0;
+  padding: 0;
+  border-radius: 0; /* A borda arredondada vem do container pai */
 }
 
-/* Nome do Time no Card */
-.pote-team-name {
+/* Siglas Minimalistas */
+.pote-team-sigla {
   font-size: 0.55rem;
-  font-weight: 700;
-  color: #cbd5e1;
-  text-align: center;
-  width: 100%;
-  padding: 0.2rem 0.1rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
+  font-weight: 800;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px; /* Descola um pouco da bandeira */
+  line-height: 1;
 }
 
-/* ===== RODAPÉ ===== */
-.actions-footer {
+.pote-team-item.current .pote-team-sigla {
+  color: #fbbf24;
+}
+
+/* BLOCO DIREITO: Controles e Navegação */
+.palco-bloco-direito {
+  flex: 0 0 auto;
   display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 2rem;
-  flex-wrap: wrap;
-  margin-top: auto;
-}
-
-.btn-footer {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  color: #cbd5e1;
-  padding: 0.9rem 2rem;
-  border-radius: 50px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.9rem;
-}
-
-.btn-footer:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(251, 191, 36, 0.3);
-  color: #fbbf24;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(251, 191, 36, 0.2);
-}
-
-.btn-footer.btn-inicio {
-  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
-  color: #1a1a1a;
-  border: none;
-  box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
-}
-
-.btn-footer.btn-inicio:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(251, 191, 36, 0.4);
-  filter: brightness(1.1);
-}
-
-/* ===== RESPONSIVIDADE ===== */
-@media (max-width: 1024px) {
-  .palco-content {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .palco-flag-container {
-    flex-direction: column;
-  }
-
-  .palco-flag-container img {
-    width: 120px;
-    height: 120px;
-  }
-
-  .palco-team-name {
-    font-size: 1.5rem;
-  }
-
-  .grupos-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .palco-section {
-    top: 80px;
-    padding: 1.5rem;
-  }
-
-  .palco-controls {
-    gap: 0.8rem;
-  }
-
-  .btn-palco {
-    width: 45px;
-    height: 45px;
-  }
-
-  .palco-flag-container img {
-    width: 100px;
-    height: 100px;
-  }
-
-  .palco-team-name {
-    font-size: 1.2rem;
-  }
-
-  .grupos-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  .grupo-card {
-    padding: 1rem;
-  }
-
-  .grupo-titulo {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-  }
-
-  .time-slot {
-    padding: 0.8rem;
-  }
-
-  .actions-footer {
-    flex-direction: column;
-  }
-
-  .btn-footer {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .palco-section {
-    border-radius: 0;
-    margin-bottom: 1rem;
-  }
-
-  .palco-flag-container {
-    gap: 1rem;
-  }
-
-  .palco-flag-container img {
-    width: 80px;
-    height: 80px;
-  }
-
-  .palco-team-name {
-    font-size: 1rem;
-  }
-
-  .palco-destino {
-    font-size: 0.9rem;
-  }
-
-  .grupos-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .resultado-final-header h1 {
-    font-size: 2rem;
-  }
-
-  .resultado-final-header p {
-    font-size: 1rem;
-  }
-
-  /* ===== BOTÃO EXPORTAR PNG MINIMALISTA (NO RODAPÉ) ===== */
-.btn-exportar {
-  background: transparent;
-  color: #fbbf24;
-  border: 1px solid rgba(251, 191, 36, 0.5);
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
   align-items: center;
+  gap: 1.5rem;
+}
+
+.palco-controls, .palco-nav-buttons {
+  display: flex;
   gap: 0.5rem;
 }
 
-.btn-exportar:hover {
-  background: rgba(251, 191, 36, 0.1);
-  border-color: #fbbf24;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.15);
+.btn-palco, .btn-nav-mini {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #a5b4fc;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* ===== NOVO BOTÃO EXPORTAR MINIMALISTA ===== */
-.btn-exportar {
+.btn-palco:hover:not(:disabled), .btn-nav-mini:hover {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: #fbbf24;
+  color: #fbbf24;
+}
+
+.btn-play-pause {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #10b981;
+}
+
+.btn-play-pause:hover {
+  background: rgba(16, 185, 129, 0.3);
+  color: #fff;
+}
+
+/* HEADER FINALIZADO (Quando o sorteio acaba) */
+.resultado-final-header {
+  flex: 0 0 auto;
+  background: rgba(13, 31, 60, 0.8);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.resultado-textos h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #fbbf24;
+}
+.resultado-textos p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #a5b4fc;
+}
+
+.resultado-acoes {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-exportar, .btn-nav-final {
   background: transparent;
-  color: #fbbf24; /* Dourado */
-  border: 1px solid rgba(251, 191, 36, 0.4);
-  padding: 0.6rem 1.2rem;
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  gap: 0.4rem;
+}
+.btn-exportar:hover, .btn-nav-final:hover {
+  background: rgba(251, 191, 36, 0.15);
+}
+
+/* ===== A ARQUIBANCADA (GRID 4x3 PERFEITA) ===== */
+.arquibancada-section {
+  flex: 1 1 auto; 
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
+}
+
+.grupos-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  grid-template-rows: repeat(3, 1fr);    
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  height: 100%;
 }
 
-.btn-exportar:hover {
-  background: rgba(251, 191, 36, 0.1);
-  border-color: #fbbf24;
-  box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
-}
-
-/* Garante que o rodapé alinhe o novo botão */
-.actions-footer {
+.grupo-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.5rem;
   display: flex;
-  flex-direction: column; /* Botão de salvar em cima, navegação embaixo */
-  align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
 }
 
-/* Container horizontal para os botões de navegação */
-.nav-buttons {
-  display: flex;
-  gap: 1rem;
-}
-
-/* Ajuste no card quando em foco para não brilhar demais na foto */
 .grupo-card.group-focused {
   border: 2px solid #fbbf24;
-}}
+  background: rgba(251, 191, 36, 0.1);
+}
+.grupo-card.group-dimmed {
+  opacity: 0.5;
+}
+.grupo-card.completo {
+  opacity: 1 !important;
+}
+
+.grupo-titulo {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #fbbf24;
+  text-align: center;
+  margin-bottom: 0.4rem;
+  flex: 0 0 auto;
+}
+
+.grupo-times {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.3rem;
+}
+
+/* ===== SLOTS DOS TIMES ===== */
+.time-slot, .time-slot.placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 0 0.5rem;
+  min-height: 0; 
+}
+
+.time-slot.visible {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.time-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.time-numero {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fbbf24;
+  color: #000;
+  border-radius: 50%;
+  font-weight: 800;
+  font-size: 0.7rem;
+}
+
+.time-content img {
+  width: 22px;
+  height: 15px;
+  border-radius: 2px;
+}
+
+.time-nome {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.placeholder-text {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-family: monospace;
+}

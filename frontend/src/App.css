@@ -27,7 +27,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 80px; /* ALTURA FIXA E COMPACTA */
+  height: 55px; /* 🟢 REDUZIDO: de 80px para 55px */
   background: var(--header-blue);
   z-index: 1000;
   backdrop-filter: blur(10px);
@@ -41,7 +41,7 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem; /* 🟢 Reduzido o espaço entre a taça e o texto */
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -49,7 +49,7 @@ body {
 }
 
 .hero-image {
-  width: 50px; /* LOGO FIXA E PEQUENA */
+  width: 35px; /* 🟢 REDUZIDO: de 50px para 35px */
   height: auto;
   filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4));
 }
@@ -61,7 +61,7 @@ body {
 }
 
 .hero-title {
-  font-size: 1.5rem; /* TÍTULO FIXO E COMPACTO */
+  font-size: 1.1rem; /* 🟢 REDUZIDO: de 1.5rem para 1.1rem */
   color: white;
   text-transform: uppercase;
   margin: 0;
@@ -70,7 +70,7 @@ body {
 }
 
 .hero-subtitle {
-  font-size: 0.85rem; /* SUBTÍTULO FIXO E COMPACTO */
+  font-size: 0.7rem; /* 🟢 REDUZIDO: de 0.85rem para 0.7rem */
   color: var(--accent-gold);
   margin: 0;
   font-weight: 600;
@@ -84,7 +84,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
-  padding-top: 110px; /* Margem exata só para o header de 80px */
+  padding-top: 75px; /* 🟢 AJUSTADO: margem exata para não sobrepor o novo header de 55px */
   position: relative;
   z-index: 10;
 }

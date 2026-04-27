@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import axios from 'axios'
-import { ChevronRight, SkipForward, RotateCcw, Play, Pause, Camera } from 'lucide-react'
+import { ChevronRight, SkipForward, RotateCcw, Play, Pause, Camera, Home, ArrowLeft } from 'lucide-react'
 import Confetti from 'react-confetti'
 import CountryFlag from './CountryFlag'
 import './ResultScreen.css'
@@ -58,7 +58,7 @@ function ResultScreenBase({ grupos, onVoltar, onVoltarInicio }) {
     return grupos._metadata.eventos;
   }, [grupos])
 
-  // ===== 2. MAPA DE VISIBILIDADE PARA A ARQUIBANCADA =====
+  // ===== 2. MAPA DE VISIBILIDADE =====
   const mapaVisibilidade = useMemo(() => {
     const mapa = {};
     filaCompleta.forEach((passo, index) => {
@@ -70,14 +70,13 @@ function ResultScreenBase({ grupos, onVoltar, onVoltarInicio }) {
   const passoInfo = filaCompleta[passoAtual] || null;
   const sorteioCompleto = passoAtual >= filaCompleta.length;
 
-  // ===== 3. LISTA ESTÁTICA DE TIMES DO POTE ATUAL (SEM SPOILERS) =====
+  // ===== 3. LISTA ESTÁTICA DE TIMES (BANNER) =====
   const timesDoPotemAtual = useMemo(() => {
     if (!passoInfo || !grupos || !grupos._metadata?.eventos) return [];
     
     const poteAtual = passoInfo.pote;
     const timesUnicos = new Map(); 
     
-    // Coletar todos os times únicos do pote
     grupos._metadata.eventos
       .filter(e => e.pote === poteAtual && !e.isPulo && e.time && !e.time.is_placeholder)
       .forEach(e => {
@@ -89,7 +88,6 @@ function ResultScreenBase({ grupos, onVoltar, onVoltarInicio }) {
     return Array.from(timesUnicos.values()).sort((a, b) => (a.nome || '').localeCompare(b.nome || ''));
   }, [passoInfo, grupos])
 
-  // ===== 4. MAPA DE TIMES JÁ SORTEADOS =====
   const timesSorteados = useMemo(() => {
     const sorteados = new Set();
     filaCompleta.slice(0, passoAtual).forEach(evento => {
@@ -109,8 +107,14 @@ function ResultScreenBase({ grupos, onVoltar, onVoltarInicio }) {
     return () => clearInterval(intervalo);
   }, [isAutoPlay, passoAtual, filaCompleta])
 
-  // ===== EFEITO: PULO DE GRUPO E SCROLL =====
+  // ===== EFEITO: PULO DE GRUPO =====
   useEffect(() => {
+    // 1. Se o sorteio acabou, limpa qualquer alerta na marra
+    if (sorteioCompleto) {
+      setSkippedGroupAlert(null);
+      return;
+    }
+
     const passoAtualInfo = filaCompleta[passoAtual];
     
     if (passoAtualInfo) {
@@ -124,10 +128,11 @@ function ResultScreenBase({ grupos, onVoltar, onVoltarInicio }) {
          
          return () => clearTimeout(timer);
       } else {
-         document.getElementById(`grupo-${passoAtualInfo.grupo}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+         // 2. A MÁGICA AQUI: Se você clicou rápido e o passo atual NÃO é pulo, apaga a mensagem antiga!
+         setSkippedGroupAlert(null);
       }
     }
-  }, [passoAtual, filaCompleta]);
+  }, [passoAtual, filaCompleta, sorteioCompleto]);
 
   if (!grupos) return null;
 
@@ -135,18 +140,33 @@ function ResultScreenBase({ grupos, onVoltar, onVoltarInicio }) {
     <div className="result-screen-container">
       {sorteioCompleto && <Confetti width={windowSize.width} height={windowSize.height} recycle={false} numberOfPieces={500} style={{ zIndex: 2000 }} />}
       
-      {!sorteioCompleto && (
+      {skippedGroupAlert && (
+        <div className="skipped-group-alert">
+          {skippedGroupAlert}
+        </div>
+      )}
+
+      {/* ===== O PALCO (HORIZONTAL DASHBOARD) ===== */}
+      {!sorteioCompleto ? (
         <div className="palco-section">
-          {skippedGroupAlert && (
-            <div className="skipped-group-alert">
-              {skippedGroupAlert}
-            </div>
-          )}
-          
-          {/* 🟢 BANNER DE TIMES DO POTE */}
-          {passoInfo && (
-            <div className="pote-banner-inline">
-              <h3 className="pote-banner-title">Times do Pote {passoInfo.pote}</h3>
+          {/* ESQUERDA: Card do Time Atual */}
+          <div className="palco-bloco-esquerdo">
+            {passoInfo && !passoInfo.isPulo && passoInfo.time && !passoInfo.time.is_placeholder ? (
+              <div className="palco-flag-container">
+                <CountryFlag sigla={passoInfo.time.sigla || 'FIFA'} tamanho="grande" />
+                <div className="palco-bandeira-info">
+                  <h2 className="palco-team-name">{passoInfo.time.nome || 'Time'}</h2>
+                  <p className="palco-destino">Pote {passoInfo.pote} → Grupo {passoInfo.grupo}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="palco-empty-state">Aguardando Sorteio...</div>
+            )}
+          </div>
+
+          {/* CENTRO: Banner de Times do Pote */}
+          <div className="palco-bloco-centro">
+            {passoInfo && (
               <div className="pote-teams-scroll">
                 {timesDoPotemAtual.length > 0 ? (
                   timesDoPotemAtual.map(time => {
@@ -157,54 +177,60 @@ function ResultScreenBase({ grupos, onVoltar, onVoltarInicio }) {
                         <div className="pote-team-flag">
                           <CountryFlag sigla={time?.sigla || 'FIFA'} tamanho="minusculo" />
                         </div>
-                        <span className="pote-team-name">{time?.nome || 'Desconhecido'}</span>
+                        <span className="pote-team-sigla">{time?.sigla || '???'}</span>
                       </div>
                     );
                   })
                 ) : null}
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
-          <div className="palco-content">
-            <div className="palco-flag-container">
-              {passoInfo && !passoInfo.isPulo && passoInfo.time && !passoInfo.time.is_placeholder && (
-                <>
-                  <CountryFlag sigla={passoInfo.time.sigla || 'FIFA'} tamanho="grande" />
-                  <div className="palco-bandeira-info">
-                    <h2 className="palco-team-name">{passoInfo.time.nome || 'Time'}</h2>
-                    <p className="palco-destino">Pote {passoInfo.pote} → Grupo {passoInfo.grupo} (Slot {passoInfo.time.slot?.charAt(1) || '?'})</p>
-                    <div className="palco-badges">
-                      {passoInfo.time.rank && <span className="badge-estatistica">🏅 Rank: {passoInfo.time.rank}</span>}
-                      {passoInfo.time.confederacao && <span className="badge-estatistica">🌍 {passoInfo.time.confederacao}</span>}
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
+          {/* DIREITA: Controles do Player e Navegação Global */}
+          <div className="palco-bloco-direito">
             <div className="palco-controls">
-              <button className="btn-palco btn-play-pause" onClick={() => setIsAutoPlay(!isAutoPlay)}>
-                {isAutoPlay ? <Pause size={18} /> : <Play size={18} />}
+              <button className="btn-palco btn-play-pause" onClick={() => setIsAutoPlay(!isAutoPlay)} title="Auto Play">
+                {isAutoPlay ? <Pause size={16} /> : <Play size={16} />}
               </button>
-              <button className="btn-palco" onClick={() => setPassoAtual(prev => prev + 1)} disabled={isAutoPlay}><ChevronRight size={18} /></button>
-              <button className="btn-palco" onClick={() => setPassoAtual(filaCompleta.length)}><SkipForward size={18} /></button>
-              <button className="btn-palco" onClick={() => {setPassoAtual(0); setIsAutoPlay(false)}}><RotateCcw size={18} /></button>
+              <button className="btn-palco" onClick={() => setPassoAtual(prev => prev + 1)} disabled={isAutoPlay} title="Próximo Passo">
+                <ChevronRight size={16} />
+              </button>
+              <button className="btn-palco" onClick={() => setPassoAtual(filaCompleta.length)} title="Pular para o Fim">
+                <SkipForward size={16} />
+              </button>
+              <button className="btn-palco" onClick={() => {setPassoAtual(0); setIsAutoPlay(false)}} title="Reiniciar Sorteio">
+                <RotateCcw size={16} />
+              </button>
+            </div>
+            
+            <div className="palco-nav-buttons">
+              <button className="btn-nav-mini" onClick={onVoltar} title="Voltar para Potes">
+                <ArrowLeft size={16} />
+              </button>
+              <button className="btn-nav-mini" onClick={onVoltarInicio} title="Ir para Início">
+                <Home size={16} />
+              </button>
             </div>
           </div>
-          <div className="progress-bar-palco">
-            <div className="progress-fill-palco" style={{ width: `${(passoAtual / filaCompleta.length) * 100}%` }}></div>
+        </div>
+      ) : (
+        <div className="resultado-final-header">
+          <div className="resultado-textos">
+            <h1>🎉 Sorteio Finalizado!</h1>
+            <p>Os 12 Grupos da Copa do Mundo 2026 Estão Confirmados</p>
+          </div>
+          <div className="resultado-acoes">
+             <button className="btn-exportar" onClick={exportarComoImagem}>
+               <Camera size={18} /> Salvar Imagem
+             </button>
+             <button className="btn-nav-final" onClick={onVoltar}>← Voltar</button>
+             <button className="btn-nav-final" onClick={onVoltarInicio}>🏠 Início</button>
           </div>
         </div>
       )}
 
-      <div className={`arquibancada-section ${sorteioCompleto ? 'sorteio-completo-view' : ''}`} ref={exportRef}>
-        {sorteioCompleto && (
-          <div className="resultado-final-header">
-            <h1>🎉 Sorteio Finalizado!</h1>
-            <p>Os 12 Grupos da Copa do Mundo 2026 Estão Confirmados</p>
-          </div>
-        )}
-
+      {/* ===== A ARQUIBANCADA (GRID 4x3 ONE PAGE) ===== */}
+      <div className="arquibancada-section" ref={exportRef}>
         <div className="grupos-grid">
           {Object.entries(grupos)
             .filter(([nome]) => nome !== '_metadata')
@@ -231,7 +257,7 @@ function ResultScreenBase({ grupos, onVoltar, onVoltarInicio }) {
                         </div>
                       ) : (
                         <div className="slot-placeholder empty">
-                          <span className="placeholder-text">POT {time?.pote}</span>
+                          <span className="placeholder-text">POTE {time?.pote}</span>
                         </div>
                       )}
                     </div>
@@ -240,24 +266,6 @@ function ResultScreenBase({ grupos, onVoltar, onVoltarInicio }) {
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* ===== RODAPÉ ===== */}
-      <div className="actions-footer">
-        {sorteioCompleto && (
-          <button className="btn-exportar" onClick={exportarComoImagem}>
-            📸 Salvar Resultado em Imagem
-          </button>
-        )}
-        
-        <div className="nav-buttons">
-          <button className="btn-footer" onClick={onVoltar}>
-            ← Voltar
-          </button>
-          <button className="btn-footer" onClick={onVoltarInicio}>
-            🏠 Início
-          </button>
         </div>
       </div>
     </div>
