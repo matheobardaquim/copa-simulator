@@ -59,12 +59,15 @@ def gerar_imagem_grupos(grupos):
         for idx, time in enumerate(times):
             y_time = y + 120 + (idx * 80)
             
+            # Usa o slot técnico armazenado no time, ou fallback para idx + 1
+            slot_display = time.get('slotNumber', idx + 1)
+            
             # Slot do Time (Cor corrigida para permitir leitura)
             draw.rounded_rectangle([x+20, y_time, x+larg_card-20, y_time+65], radius=10, fill=cor_slot_time)
             
             # Número
             draw.ellipse([x+35, y_time+17, x+65, y_time+47], fill=cor_dourada)
-            draw.text((x+50, y_time+32), str(idx+1), fill=(0,0,0), font=fonte_time, anchor="mm")
+            draw.text((x+50, y_time+32), str(slot_display), fill=(0,0,0), font=fonte_time, anchor="mm")
             
             # Nome do Time (Agora visível)
             draw.text((x+80, y_time+32), time['nome'][:18], fill=(255,255,255), font=fonte_time, anchor="lm")

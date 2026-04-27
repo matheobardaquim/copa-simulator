@@ -13,6 +13,7 @@ function CountryFlag({ sigla, nome, mostrarNome = false, tamanho = 'pequeno' }) 
   const [flagError, setFlagError] = useState(false)
 
   const tamanhos = {
+    minusculo: 16,
     pequeno: 24,
     medio: 40,
     grande: 64

@@ -22,165 +22,101 @@
 /* ===== O PALCO (STICKY NO TOPO) ===== */
 .palco-section {
   position: sticky;
-  top: 80px; /* Ajustado para a barra menor */
+  top: 60px;
   z-index: 100;
   background: linear-gradient(135deg, rgba(13, 31, 60, 0.95) 0%, rgba(26, 58, 82, 0.95) 100%);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(251, 191, 36, 0.2);
-  border-radius: 0 0 24px 24px;
-  padding: 2rem;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
-  margin-bottom: 2rem;
+  border-radius: 0 0 16px 16px;
+  padding: 0.8rem 1.5rem; /* Menos padding */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  margin-bottom: 1rem;
   animation: palcoSlideDown 0.6s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 @keyframes palcoSlideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .palco-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .palco-flag-container {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
   flex: 1;
 }
 
-/* BANDEIRA MONUMENTAL NO PALCO */
+/* Bandeira do Time Atual - MENOR */
 .palco-flag-container img {
-  width: 140px;
-  height: 140px;
-  border-radius: 16px;
-  filter: drop-shadow(0 0 40px rgba(251, 191, 36, 0.6))
-          drop-shadow(0 8px 32px rgba(249, 115, 22, 0.3));
-  border: 3px solid rgba(251, 191, 36, 0.4);
-  animation: bandeiraPulso 0.6s ease-out;
-  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
-}
-
-@keyframes bandeiraPulso {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-    filter: drop-shadow(0 0 0px rgba(251, 191, 36, 0));
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-    filter: drop-shadow(0 0 40px rgba(251, 191, 36, 0.6))
-            drop-shadow(0 8px 32px rgba(249, 115, 22, 0.3));
-  }
+  width: 65px; /* De 90px para 65px */
+  height: 65px; 
+  border-radius: 8px;
+  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4));
+  border: 2px solid rgba(251, 191, 36, 0.4);
 }
 
 .palco-bandeira-info {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
 }
 
 .palco-team-name {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.3rem; /* Menor */
   font-weight: 900;
   color: #ffffff;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-  animation: nomeSlideIn 0.6s ease-out 0.1s both;
-}
-
-@keyframes nomeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  letter-spacing: 1px;
 }
 
 .palco-destino {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   color: #fbbf24;
   font-weight: 700;
-  letter-spacing: 1px;
   text-transform: uppercase;
-  animation: destinoSlideIn 0.6s ease-out 0.2s both;
-}
-
-@keyframes destinoSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 /* Controles do Palco */
 .palco-controls {
   display: flex;
-  gap: 1rem;
+  gap: 0.6rem;
   justify-content: center;
   align-items: center;
 }
 
 .btn-palco {
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
   border: 1px solid rgba(251, 191, 36, 0.3);
   color: #fbbf24;
-  width: 50px;
-  height: 50px;
+  width: 38px; /* Botões menores */
+  height: 38px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-weight: 700;
 }
 
-.btn-palco:hover:not(:disabled) {
-  background: rgba(251, 191, 36, 0.2);
-  border-color: rgba(251, 191, 36, 0.6);
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+.btn-palco svg {
+  width: 16px;
+  height: 16px;
 }
-
-.btn-palco:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.btn-play-pause {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-  border-color: rgba(16, 185, 129, 0.5) !important;
-}
-
-.btn-play-pause:hover:not(:disabled) {
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.5) !important;
-}
-
 /* Badges de Estatísticas no Palco */
 .palco-badges {
   display: flex;
@@ -296,8 +232,8 @@
 /* ===== GRID DOS 12 GRUPOS ===== */
 .grupos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Cards podem ficar mais finos */
+  gap: 1rem; /* Menos buraco entre os grupos */
   margin-bottom: 2rem;
 }
 
@@ -305,94 +241,63 @@
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 1rem; /* Menos gordura interna */
   transition: all 0.4s ease-in-out;
-  
-  /* A MÁGICA DO SCROLL AQUI: Compensa os 80px do Header + tamanho do Palco */
-  scroll-margin-top: 350px; 
-}
-
-/* Destaque do Grupo em Foco */
-.grupo-card.group-focused {
-  background: rgba(251, 191, 36, 0.12);
-  border: 2px solid rgba(251, 191, 36, 0.5);
-  transform: scale(1.05);
-  box-shadow: 0 0 40px rgba(251, 191, 36, 0.3),
-              inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  z-index: 10;
-}
-
-/* Dimming dos Outros Grupos */
-.grupo-card.group-dimmed {
-  opacity: 0.4;
-  transform: scale(0.98);
-}
-
-/* Quando sorteio completo */
-.grupo-card.completo {
-  opacity: 1 !important;
-  transform: scale(1) !important;
+  scroll-margin-top: 250px; /* Ajustado pro header novo */
 }
 
 .grupo-titulo {
-  font-size: 1.3rem;
+  font-size: 1.1rem; /* Menor */
   font-weight: 900;
   color: #fbbf24;
   text-align: center;
-  margin-bottom: 1.5rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 0.8rem;
+  letter-spacing: 1px;
 }
 
 .grupo-times {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.6rem; /* Os times ficam mais juntinhos */
 }
 
 /* ===== SLOTS DOS TIMES ===== */
-.time-slot {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  padding: 1rem;
-  transition: all 0.4s ease-in-out;
-  min-height: 60px;
+.time-slot, .time-slot.placeholder {
+  border-radius: 8px;
+  padding: 0.5rem; /* Slot mais fino */
+  min-height: 45px; /* Menor altura */
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.8rem;
+  gap: 0.6rem;
 }
 
-.time-slot.visible {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-  animation: slideInSlot 0.5s ease-out both;
+.time-content {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
 }
 
-.time-slot.vazio {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px dashed rgba(255, 255, 255, 0.08);
+.time-numero {
+  min-width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
 }
 
-.time-slot.palco-agora {
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(249, 115, 22, 0.1) 100%);
-  border: 2px solid rgba(251, 191, 36, 0.4);
-  box-shadow: inset 0 0 15px rgba(251, 191, 36, 0.1);
+.time-content img {
+  width: 26px; /* Bandeirinha do slot menor */
+  height: 18px;
+  border-radius: 3px;
 }
 
-@keyframes slideInSlot {
-  from {
-    opacity: 0;
-    transform: translateY(-15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.time-nome {
+  font-size: 0.85rem; /* Fonte menor para caber nomes longos */
+}
+
+.placeholder-text {
+  font-size: 0.9rem;
 }
 
 .time-content {
@@ -471,6 +376,122 @@
 @keyframes pulse {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
+}
+
+/* ===== SLOT PLACEHOLDER (POT X) ===== */
+.time-slot.placeholder {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(249, 115, 22, 0.05) 100%);
+  border: 2px dashed rgba(251, 191, 36, 0.3);
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slot-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.slot-placeholder.empty {
+  opacity: 0.6;
+}
+
+.placeholder-text {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: rgba(251, 191, 36, 0.6);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-family: 'Courier New', monospace;
+}
+
+/* ===== BANNER DE POTES (DENTRO DO PALCO - SEM SPOILERS) ===== */
+.pote-banner-inline {
+  width: 100%;
+  margin-bottom: 0.3rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.pote-banner-title {
+  margin: 0 0 0.4rem 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fbbf24;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.pote-teams-scroll {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center; /* Centraliza os 12 cards */
+  flex-wrap: wrap; /* Se a tela for pequena, ele quebra a linha e remove o scroll */
+  padding: 0.2rem 0;
+}
+
+/* Oculta a barra de rolagem já que não usaremos mais */
+.pote-teams-scroll::-webkit-scrollbar { display: none; }
+
+/* Card de Time no Banner - MENOR E ENCAIXADO */
+.pote-team-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  width: 72px; /* Bem mais fino para caber 12 na tela */
+  height: 72px; /* Mais quadradinho */
+  padding: 0;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  overflow: hidden; /* Garante que a bandeira não vaze nas bordas arredondadas */
+}
+
+.pote-team-item.sorted {
+  opacity: 0.3;
+  filter: grayscale(0.8);
+}
+
+.pote-team-item.current {
+  border: 2px solid #fbbf24;
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Bandeira no Card - PREENCHIMENTO TOTAL */
+.pote-team-flag {
+  width: 100%;
+  height: 48px; /* Ocupa 2/3 do card perfeitamente */
+  border-radius: 0;
+  border: none;
+}
+
+.pote-team-flag img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Faz a bandeira esticar lindamente e preencher 100% da caixa */
+  display: block;
+}
+
+/* Nome do Time no Card */
+.pote-team-name {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  text-align: center;
+  width: 100%;
+  padding: 0.2rem 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
 /* ===== RODAPÉ ===== */

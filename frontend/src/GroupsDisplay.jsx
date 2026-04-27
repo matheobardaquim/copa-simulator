@@ -29,7 +29,9 @@ function GroupsDisplay({ grupos, paisSede }) {
       </div>
 
       <div className="grupos-grid">
-        {Object.entries(grupos).map(([nome, data]) => (
+        {Object.entries(grupos)
+          .filter(([nome]) => nome !== '_metadata')
+          .map(([nome, data]) => (
           <div key={nome} className="group-card">
             <div className="group-title">Grupo {nome}</div>
             <div className="teams-list" style={{ padding: '1.2rem' }}>

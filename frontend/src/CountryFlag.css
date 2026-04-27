@@ -8,6 +8,13 @@
 }
 
 /* Tamanhos disponíveis */
+.country-flag-minusculo .flag-image {
+  width: 16px;
+  height: auto;
+  min-height: 11px;
+  max-height: 11px;
+}
+
 .country-flag-pequeno .flag-image {
   width: 24px;
   height: auto;
